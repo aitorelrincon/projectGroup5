@@ -63,7 +63,6 @@ namespace BugCatcher.Utils
             }
 
             Instance = this as T;
-            DontDestroyOnLoad( gameObject );
             OnAwake();
         }
 
