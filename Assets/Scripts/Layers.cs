@@ -15,6 +15,11 @@ public static class Layers
     public const int Water          = 4;
     public const int UI             = 5;
 
+
+
+    /// <summary>
+    /// Array access to the layers built with reflection.
+    /// </summary>
     public static readonly int[] Array
         = typeof( Layers )
             .GetFields( BindingFlags.Public | BindingFlags.Static )
