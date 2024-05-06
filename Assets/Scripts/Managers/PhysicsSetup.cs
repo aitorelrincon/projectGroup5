@@ -1,25 +1,34 @@
+using BugCatcher.Interfaces;
 using BugCatcher.Utils;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PhysicsSetup : MonoSingle<PhysicsSetup>
+public class PhysicsSetup 
+    : MonoSingle<PhysicsSetup>
+    , ISingleSetup<PhysicsSetup>
 {
-    public static bool Done { get; private set; } = false;
+    public bool Done { get; private set; } = false;
 
-    protected override void OnAwake()
+    protected override void OnAwake() => Setup();
+
+    public bool Setup()
     {
         if ( Done )
         {
             Destroy( this );
-            return;
+            return false;
         }
 
-        // No one should collide with the skybox
-        foreach( var l in Layers.Array )
+
+
+        // Removing the collider is from the skybox is enough,
+        // but this *ENSURES* no one ever collides with it.
+        foreach ( var l in Layers.Array )
             Physics.IgnoreLayerCollision( Layers.Skybox, l );
 
         Done = true;
         Destroy( this );
+        return true;
     }
 }
