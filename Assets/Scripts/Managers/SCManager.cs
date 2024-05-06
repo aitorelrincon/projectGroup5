@@ -11,10 +11,11 @@ using UnityEditor;
 
 public class SCManager : MonoSingle<SCManager>
 {
-    protected void OnAwake()
+    protected override void OnAwake()
     {
         // This way we can easily customize scene loading
-        // SceneManager.sceneLoaded += ( s, m ) => { };
+        // SceneManager.sceneLoaded   += ( s, m ) => { };
+        // SceneManager.sceneUnloaded += ( s, m ) => { };
     }
 
     public void LoadScene( string sceneName ) => SceneManager.LoadScene( sceneName );
