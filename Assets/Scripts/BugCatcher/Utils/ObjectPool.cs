@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace BugCatcher.Utils
 {
+    [Obsolete("This class is obsolete. Use BugCatcher.Utils.ObjectPooling.Pool instead.", false)]
     public class ObjectPool : MonoSingle<ObjectPool>
     {
         [Header("Object config")]

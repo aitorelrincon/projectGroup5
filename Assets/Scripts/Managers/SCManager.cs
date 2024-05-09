@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement; // Se incluye la librería para el manejo de e
 using BugCatcher.Utils;
 using UnityEditor;
 
+[DefaultExecutionOrder( -9999 ), DisallowMultipleComponent]
 public class SCManager : MonoSingle<SCManager>
 {
     protected override void OnAwake()

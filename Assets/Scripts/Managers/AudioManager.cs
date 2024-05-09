@@ -14,6 +14,7 @@ using BugCatcher.Extensions;
 /// <summary>
 /// AudioManager singleton class.
 /// </summary>
+[DefaultExecutionOrder(-9999), DisallowMultipleComponent]
 public class AudioManager : MonoSingle<AudioManager>
 {
     public const int GEN_CHANNEL = 0;

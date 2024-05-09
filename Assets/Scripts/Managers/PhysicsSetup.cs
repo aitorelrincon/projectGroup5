@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[DefaultExecutionOrder( -9999 ), DisallowMultipleComponent]
 public class PhysicsSetup 
     : MonoSingle<PhysicsSetup>
     , ISingleSetup<PhysicsSetup>
