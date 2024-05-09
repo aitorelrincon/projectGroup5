@@ -17,10 +17,13 @@ namespace BugCatcher.Utils.ObjectPooling
 {
     public class Pool
     {
+        #region Constants
         const int DEFAULT_POOL_CAP      = 64;
         const int DEFAULT_PREFDICT_CAP  = DEFAULT_POOL_CAP;
         const int DEFAULT_INSTDICT_CAP  = 256;
+        #endregion
 
+        #region Static variables
 #if A_NIGHTMARE_ON_OOP_STREET
         static MethodInfo _setTemplateAndPool = 
             typeof(PoolResource )
@@ -32,16 +35,38 @@ namespace BugCatcher.Utils.ObjectPooling
         static Transform                    _prefabsParent = null;
         static Dictionary<GameObject, Pool>   _prefabsDict = new( DEFAULT_PREFDICT_CAP );
         static Dictionary<GameObject, Pool> _instancesDict = new( DEFAULT_INSTDICT_CAP );
+        #endregion
 
+        #region Instance variables
         HashStack<PoolResource> _available;
         List<GameObject>        _instances;
         (GameObject gameObject, Quaternion rotation, Vector3 localScale)          
             _prefab;
         
         PoolResource            _template;
+        #endregion
 
-        public Pool( GameObject original ) 
+        #region Constructors & destructor
+        /// <summary>
+        /// Constructs a new object Pool for the passed object.
+        /// Automatically adds a PoolResource component if it
+        /// doesn't have one already.
+        /// </summary>
+        /// <param name="original">Original GameObject</param>
+        /// <param name="capacity">Pool capacity</param>
+        /// <exception cref="System.ArgumentOutOfRangeException">Capacity must be > 0</exception>
+        /// <exception cref="System.ArgumentException">Pool already exists for that object</exception>
+        private Pool( GameObject original, int capacity = DEFAULT_POOL_CAP ) 
         {
+            if ( capacity < 0 )
+                throw new System.ArgumentOutOfRangeException( "Capacity must be > 0" );
+
+        // If constructor is private, we don't have to worry about this
+        #if false
+            if ( _prefabsDict.ContainsKey( original ) )
+                throw new System.ArgumentException( "Pool already exists for that object" );
+        #endif
+
             if ( _prefabsParent is null )
             {
                 var go = new GameObject( "PoolsPrefabsParent" );
@@ -84,30 +109,66 @@ namespace BugCatcher.Utils.ObjectPooling
 #endif
 
             _template.transform.parent = _prefabsParent;
-            _available = new( DEFAULT_POOL_CAP );
-            _instances = new( DEFAULT_POOL_CAP );
+            _available = new( capacity );
+            _instances = new( capacity );
             _prefabsDict.Add( _prefab.gameObject, this );
         }
 
+        /// <summary>
+        /// Prefab entry on the _prefabDict shouldn't keep existing after destroying.
+        /// </summary>
         ~Pool()
         {
             if ( _prefab.gameObject != null
             &&   _prefabsDict.ContainsKey( _prefab.gameObject ) )
                 Clear( true );
         }
+#endregion
 
-        public static Pool GetByPrefab( GameObject prefab, bool create = true )
+        #region Static methods
+        /// <summary>
+        /// Retrieves the Pool associated with the passed prefab,
+        /// or creates one by default if it doesn't exist.
+        /// </summary>
+        /// <param name="prefab">Original object</param>
+        /// <param name="creationCapacity">Capacity when creating a new Pool</param>
+        /// <returns></returns>
+        public static Pool GetOrAdd( GameObject prefab, int creationCapacity = DEFAULT_POOL_CAP )
         {
-            if ( !_prefabsDict.TryGetValue( prefab, out var pool )
-            &&   create )
-                pool = new( prefab );
+            if ( TryGetByInstance( prefab, out var instPool ) )
+                return instPool;
 
-            return pool;
+            if ( !TryGetByPrefab( prefab, out var prefPool ) )
+                prefPool = new( prefab, creationCapacity );
+
+            return prefPool;
         }
 
+        /// <summary>
+        /// Tries to retrive the Pool associated with the passed GameObject,
+        /// only checking global pooled prefabs.
+        /// </summary>
+        /// <param name="instance">Prefab to find</param>
+        /// <param name="pool">Pool to write</param>
+        /// <returns>True if succesful</returns>
+        public static bool TryGetByPrefab( GameObject prefab, out Pool pool )
+            => _prefabsDict.TryGetValue( prefab, out pool );
+
+        /// <summary>
+        /// Tries to retrive the Pool associated with the passed GameObject,
+        /// only checking global pooled instances.
+        /// </summary>
+        /// <param name="instance">Instance to find</param>
+        /// <param name="pool">Pool to write</param>
+        /// <returns>True if succesful</returns>
         public static bool TryGetByInstance( GameObject instance, out Pool pool )
             => _instancesDict.TryGetValue( instance, out pool );
 
+        /// <summary>
+        /// Tries to return an Instance to its respective Pool.
+        /// </summary>
+        /// <param name="instance">Instance to return</param>
+        /// <returns>True if succesful</returns>
         public static bool TryReturnInstance( GameObject instance )
         {
             if ( !TryGetByInstance( instance, out Pool pool ) )
@@ -130,7 +191,7 @@ namespace BugCatcher.Utils.ObjectPooling
         
         public static Pool Fill( GameObject prefab, int count )
         {
-            var pool = GetByPrefab( prefab, true );
+            var pool = GetOrAdd( prefab );
             pool.Fill( count );
             return pool;
         }
@@ -142,7 +203,9 @@ namespace BugCatcher.Utils.ObjectPooling
 
             Debug.Log( $"[Pool] - All pools cleared" );
         }
+        #endregion
 
+        #region Public instance methods
         public void Fill( int count )
         {
             for ( int i = 0; i < count; i++ )
@@ -268,7 +331,9 @@ namespace BugCatcher.Utils.ObjectPooling
         
             Debug.Log( $"[Pool] - Pool for {_prefab.gameObject.name} has been cleared" );
         }
+        #endregion
 
+        #region Private instance methods
         PoolResource CreateInstance( bool active = true )
         {
             var instance = Object.Instantiate( _template );
@@ -289,5 +354,6 @@ namespace BugCatcher.Utils.ObjectPooling
             resource.transform.rotation   = _prefab.rotation;
             resource.transform.localScale = _prefab.localScale;
         }
+        #endregion
     }
 }
