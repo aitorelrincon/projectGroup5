@@ -180,6 +180,11 @@ namespace BugCatcher.Utils.ObjectPooling
             return true;
         }
 
+        /// <summary>
+        /// Tries to remove an Instance from its respective Pool.
+        /// </summary>
+        /// <param name="instance">Instance to remove</param>
+        /// <returns>True if succesful</returns>
         public static bool TryRemoveInstance( GameObject instance )
         {
             if ( !TryGetByInstance( instance, out Pool pool ) )
@@ -189,6 +194,12 @@ namespace BugCatcher.Utils.ObjectPooling
             return true;
         }
         
+        /// <summary>
+        /// Fills a Pool with 'count' instances of the 'prefab'.
+        /// </summary>
+        /// <param name="prefab">Original prefab</param>
+        /// <param name="count">Instances to add</param>
+        /// <returns></returns>
         public static Pool Fill( GameObject prefab, int count )
         {
             var pool = GetOrAdd( prefab );
@@ -196,6 +207,9 @@ namespace BugCatcher.Utils.ObjectPooling
             return pool;
         }
 
+        /// <summary>
+        /// Clears all Pools.
+        /// </summary>
         public static void ClearAll()
         {
             foreach( var pool in _instancesDict.Values )
@@ -206,15 +220,26 @@ namespace BugCatcher.Utils.ObjectPooling
         #endregion
 
         #region Public instance methods
+        /// <summary>
+        /// Fills a Pool with 'count' instances of its prefab.
+        /// </summary>
+        /// <param name="count"></param>
         public void Fill( int count )
         {
             for ( int i = 0; i < count; i++ )
                 _available.Push( CreateInstance( false ) );
         }
 
+        /// <summary>
+        /// Returns an Instance of the Pooled prefab, creating a new one
+        /// when there are no more.
+        /// </summary>
+        /// <returns>Pooled Instance</returns>
         public GameObject Get()
         {
             PoolResource instance;
+
+            // TODO: Preemptively creating more than one here might be a good idea
             if ( _available.Count == 0 )
             {
                 instance = CreateInstance();
@@ -236,20 +261,42 @@ namespace BugCatcher.Utils.ObjectPooling
             instance.gameObject.SetActive( true );
             return instance.gameObject;
         }
-        public GameObject Get( Transform parent )
+
+        /// <summary>
+        /// <inheritdoc cref="Get()"/>
+        /// Also, sets the parent of the object.
+        /// </summary>
+        /// <param name="parent">New parent</param>
+        /// <returns>Pooled Instance</returns>
+        public GameObject Get( Transform parent)
         {
             var instance = Get();
             instance.transform.parent = parent;
             return instance;
         }
 
-        public GameObject Get( Transform parent, bool worldPositionStays )
+        /// <summary>
+        /// <inheritdoc cref="Get()"/>
+        /// Also, sets the parent of the object, taking into account if it
+        /// should keep the same world position.
+        /// </summary>
+        /// <param name="parent">New parent</param>
+        /// <param name="worldPositionStays">Should keep same world position?</param>
+        /// <returns>Pooled Instance</returns>
+        public GameObject Get( Transform parent, bool worldPositionStays)
         {
             var instance = Get();
             instance.transform.SetParent( parent, worldPositionStays );
             return instance;
         }
 
+        /// <summary>
+        /// <inheritdoc cref="Get()"/>
+        /// Also, sets both the position & rotation of the object.
+        /// </summary>
+        /// <param name="position">New position</param>
+        /// <param name="rotation">New rotation</param>
+        /// <returns>Pooled Instance</returns>
         public GameObject Get( Vector3 position, Quaternion rotation )
         {
             var instance = Get();
@@ -258,6 +305,14 @@ namespace BugCatcher.Utils.ObjectPooling
             return instance;
         }
 
+        /// <summary>
+        /// <inheritdoc cref="Get()"/>
+        /// Also, sets the position, rotation and parent of the object.
+        /// </summary>
+        /// <param name="position">New position</param>
+        /// <param name="rotation">New rotation</param>
+        /// <param name="parent">New parent</param>
+        /// <returns>Pooled Instance</returns>
         public GameObject Get( Vector3 position, Quaternion rotation, Transform parent )
         {
             var instance = Get();
@@ -267,6 +322,12 @@ namespace BugCatcher.Utils.ObjectPooling
             return instance;
         }
 
+        /// <summary>
+        /// <inheritdoc cref="Get()"/>
+        /// After that, gets a Component of the specified type.
+        /// </summary>
+        /// <typeparam name="T">Component type</typeparam>
+        /// <returns>Pooled Instance's Component</returns>
         public T Get<T>() where T : Component 
             => Get().GetComponent<T>();
 
@@ -288,6 +349,10 @@ namespace BugCatcher.Utils.ObjectPooling
             => Get( position, rotation, parent )
                 .GetComponent<T>();
 
+        /// <summary>
+        /// Returns an Instance to its Pool.
+        /// </summary>
+        /// <param name="instance">Instance to return</param>
         public void Return( GameObject instance )
         {
             if ( !_instancesDict.ContainsKey( instance ) )
@@ -298,16 +363,28 @@ namespace BugCatcher.Utils.ObjectPooling
             _available.Push( r );
         }
 
-        public void Remove( GameObject instance )
+        /// <summary>
+        /// Remove an Instance from its Pool.
+        /// </summary>
+        /// <param name="instance">Instance to remove</param>
+        /// <param name="destroyInstance">Should destroy instance?</param>
+        public void Remove( GameObject instance, bool destroyInstance = true )
         {
             if ( !_instancesDict.Remove( instance ) )
                 return;
 
             ResetResource( instance.GetComponent<PoolResource>() );
-            Object.Destroy( instance );
+            
+            if ( destroyInstance || !inst.activeInHierarchy )
+                Object.Destroy( instance );
+            
             _instancesDict.Remove( instance );
         }
 
+        /// <summary>
+        /// Clears the Pool.
+        /// </summary>
+        /// <param name="destroyInstances">Should destroy all instances?</param>
         public void Clear( bool destroyInstances = true )
         {
             for ( int i = 0; i < _instances.Count; ++i )
@@ -334,6 +411,11 @@ namespace BugCatcher.Utils.ObjectPooling
         #endregion
 
         #region Private instance methods
+        /// <summary>
+        /// Creates a new Instance of the Pooled prefab.
+        /// </summary>
+        /// <param name="active">SetActive</param>
+        /// <returns>New Instance</returns>
         PoolResource CreateInstance( bool active = true )
         {
             var instance = Object.Instantiate( _template );
@@ -345,11 +427,16 @@ namespace BugCatcher.Utils.ObjectPooling
             return instance;
         }
 
+        /// <summary>
+        /// Resets PoolResource
+        /// </summary>
+        /// <param name="resource">PoolResource</param>
         void ResetResource( PoolResource resource )
         {
             resource.OnReturn();
             resource.gameObject.SetActive( false );
 
+            // TODO: Maybe we could have a default parent for Pooled objects...
             resource.transform.parent     = null;
             resource.transform.rotation   = _prefab.rotation;
             resource.transform.localScale = _prefab.localScale;
