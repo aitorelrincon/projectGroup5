@@ -3,6 +3,7 @@
 using BugCatcher.Extensions;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace BugCatcher.Utils.ObjectPooling
 {
@@ -35,6 +36,11 @@ namespace BugCatcher.Utils.ObjectPooling
             _prefab;
         
         PoolResource            _template;
+        #endregion
+
+        #region Properties
+        public int PooledCount => _available.Count;
+        public int TotalCount  => _instances.Count;
         #endregion
 
         #region Constructors & destructor
@@ -194,10 +200,11 @@ namespace BugCatcher.Utils.ObjectPooling
         /// <param name="prefab">Original prefab</param>
         /// <param name="count">Instances to add</param>
         /// <returns></returns>
-        public static Pool Fill( GameObject prefab, int count )
+        public static Pool GetAndFill( GameObject prefab, int count )
         {
             var pool = GetOrAdd( prefab );
             pool.Fill( count );
+            Debug.Log( count.ToString() + " - " + pool.TotalCount );
             return pool;
         }
 

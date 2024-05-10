@@ -54,7 +54,7 @@ public class PoolSetup
                 continue;
             }
 
-            Pool.Fill( a.prefab, a.count );
+            Pool.GetAndFill( a.prefab, a.count );
         }
 
         Done = true;

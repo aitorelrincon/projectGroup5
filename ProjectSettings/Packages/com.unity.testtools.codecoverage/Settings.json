@@ -1,5 +1,21 @@
 {
     "m_Dictionary": {
-        "m_DictionaryValues": []
+        "m_DictionaryValues": [
+            {
+                "type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                "key": "IncludeAssemblies",
+                "value": "{\"m_Value\":\"Assembly-CSharp,Assembly-CSharp-Editor,AssistantCoreSDKEditor,AssistantCoreSDKRuntime,Facebook.Wit.Dictation,Facebook.Wit.Dictation.Editor,Meta.Voice.Hub.Editor,Meta.Voice.Hub.Runtime,Meta.Voice.Samples.BuiltInTimer,Meta.Voice.Samples.Chess,Meta.Voice.Samples.Dictation,Meta.Voice.Samples.LightTraits,Meta.Voice.Samples.LiveUnderstanding,Meta.Voice.Samples.Shapes,Meta.Voice.Samples.ShapesConduit,Meta.Voice.Samples.TTSVoices,Meta.Voice.VSDKHub.Editor,Meta.VoiceSDK.Mic.Common,Meta.VoiceSDK.Mic.Other,Meta.VoiceSDK.Mic.WebGL,Meta.WitAi,Meta.WitAi.Conduit,Meta.WitAi.Conduit.Editor,Meta.WitAi.Editor,Meta.WitAi.Lib,Meta.WitAI.Lib.Editor,Meta.WitAi.TTS,Meta.WitAi.TTS.Editor,Meta.XR.BuildingBlocks,Meta.XR.BuildingBlocks.Editor,Oculus.AudioManager,Oculus.AudioManager.Audio.Editor,Oculus.AudioManager.Utils.Editor,Oculus.Interaction,Oculus.Interaction.Editor,Oculus.Interaction.InterfaceSupport,Oculus.Interaction.OVR,Oculus.Interaction.OVR.Editor,Oculus.Interaction.OVR.Samples,Oculus.Interaction.Samples.Editor,Oculus.LipSync,Oculus.LipSync.Editor,Oculus.Platform,Oculus.Platform.Editor,Oculus.Spatializer,Oculus.Spatializer.Editor,Oculus.VR,Oculus.VR.Editor,Oculus.VR.Scripts.Editor,VoiceSDK.Dictation.Editor,VoiceSDK.Dictation.Runtime,VoiceSDK.Editor,VoiceSDK.Runtime,VoiceSDK.Telemetry\"}"
+            },
+            {
+                "type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                "key": "Path",
+                "value": "{\"m_Value\":\"{ProjectPath}\"}"
+            },
+            {
+                "type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                "key": "HistoryPath",
+                "value": "{\"m_Value\":\"{ProjectPath}\"}"
+            }
+        ]
     }
 }

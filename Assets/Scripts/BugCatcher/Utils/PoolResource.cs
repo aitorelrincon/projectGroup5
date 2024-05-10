@@ -26,7 +26,8 @@ namespace BugCatcher.Utils.ObjectPooling
 
         void OnDisable()
         {
-            if ( ReturnOnDisable ) Pool.Return( gameObject );
+            if ( ReturnOnDisable && Pool is not null ) 
+                Pool.Return( gameObject );
         }
 
         void OnDestroy()
@@ -43,11 +44,13 @@ namespace BugCatcher.Utils.ObjectPooling
 #pragma warning disable IDE1006 // Naming style
         void ___SetPool( Pool pool )
         {
+            Debug.Log( $"[PoolResource] - ___SetPool called for {gameObject.name} - pool: { pool is not null }" );
             Pool = pool;
         }
 
         void ___MakeTemplate(  )
         {
+            Debug.Log( $"[PoolResource] - ___MakeTemplate called for {gameObject.name}" );
             IsTemplate = true;
         }
 #pragma warning restore IDE1006 // Naming style
