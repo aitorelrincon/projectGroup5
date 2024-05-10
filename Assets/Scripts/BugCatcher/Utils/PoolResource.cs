@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -33,16 +31,26 @@ namespace BugCatcher.Utils.ObjectPooling
 
         void OnDestroy()
         {
+            if ( Pool is null ) return; // This means it has already been removed from its Pool
+
             if ( IsTemplate )
                 Debug.Log( $"[PoolResource] - Destroying {gameObject.name} prefab" );
 
             Pool.Remove( gameObject );
         }
-    
-        void ___SetPoolAndTemplate( Pool pool )
+
+#pragma warning disable IDE0051 // Remove unused private members
+#pragma warning disable IDE1006 // Naming style
+        void ___SetPool( Pool pool )
         {
-            Pool       = pool;
+            Pool = pool;
+        }
+
+        void ___MakeTemplate(  )
+        {
             IsTemplate = true;
         }
+#pragma warning restore IDE1006 // Naming style
+#pragma warning restore IDE0051 // Remove unused private members
     }
 }

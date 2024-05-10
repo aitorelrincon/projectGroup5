@@ -1,17 +1,8 @@
 // #define A_NIGHTMARE_ON_OOP_STREET
 
 using BugCatcher.Extensions;
-using BugCatcher.Interfaces;
-using Oculus.Interaction.DebugTree;
-using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
-using UnityEngine.Events;
-
-using System.Reflection;
-using Unity.VisualScripting;
-using Meta.WitAi.Events;
 
 namespace BugCatcher.Utils.ObjectPooling
 {
@@ -94,18 +85,21 @@ namespace BugCatcher.Utils.ObjectPooling
             // BroadcastMessage with a temp parent.
             // Plus, some of the score for the project comes from doing
             // a justified use of both SendMessage & BroadcastMessage.
+            // EDIT: Wait I'm stupid. We can just use SendMessage. Less expensive.
             if ( _templateSetup is null )
             {
                 var go = new GameObject( "PoolsTemplateSetup" );
                 Object.DontDestroyOnLoad( go );
-                _templateSetup = go.transform;
+                // _templateSetup = go.transform;
             }
 
-            _template.transform.parent = _templateSetup;
-            if ( _templateSetup.childCount > 1 )
-                Debug.LogError( "[Pools] - PoolsTemplateSetup must only have one child at a time" );
+            // _template.transform.parent = _templateSetup;
+            // if ( _templateSetup.childCount > 1 )
+            //  Debug.LogError( "[Pools] - PoolsTemplateSetup must only have one child at a time" );
+            // _templateSetup.BroadcastMessage( "___SetPool", { this } );
 
-            _templateSetup.BroadcastMessage( "___SetPoolAndTemplate", this );
+            _template.SendMessage( "___SetPool", this );
+            _template.SendMessage( "___MakeTemplate" );
 #endif
 
             _template.transform.parent = _prefabsParent;
@@ -250,10 +244,10 @@ namespace BugCatcher.Utils.ObjectPooling
             // Objects can only be removed from Stacks by popping.
             // Thus, we must make sure that each and every object we're
             // popping hasn't been destroyed yet.
-            while (( instance = _available.Pop() ) != null && _available.Count > 0) { }
+            while ( ( instance = _available.Pop() ) != null && _available.Count > 0 ) { }
 
             // No available instances, create a new one
-            if ( instance != null )
+            if ( instance == null )
                 instance = CreateInstance();
 
         Finish:
@@ -331,19 +325,43 @@ namespace BugCatcher.Utils.ObjectPooling
         public T Get<T>() where T : Component 
             => Get().GetComponent<T>();
 
+        /// <summary>
+        /// <inheritdoc cref="Get( Transform )"/>
+        /// After that, gets a Component of the specified type.
+        /// </summary>
+        /// <typeparam name="T">Component type</typeparam>
+        /// <returns>Pooled Instance's Component</returns>
         public T Get<T>( Transform parent ) where T : Component
             => Get( parent ).GetComponent<T>();
 
+        /// <summary>
+        /// <inheritdoc cref="Get( Transform, bool )"/>
+        /// After that, gets a Component of the specified type.
+        /// </summary>
+        /// <typeparam name="T">Component type</typeparam>
+        /// <returns>Pooled Instance's Component</returns>
         public T Get<T>( Transform parent, bool worldPositionStays )
             where T : Component
             => Get( parent, worldPositionStays )
                 .GetComponent<T>();
 
+        /// <summary>
+        /// <inheritdoc cref="Get( Transform, Quaternion )"/>
+        /// After that, gets a Component of the specified type.
+        /// </summary>
+        /// <typeparam name="T">Component type</typeparam>
+        /// <returns>Pooled Instance's Component</returns>
         public T Get<T>( Vector3 position, Quaternion rotation )
             where T : Component
             => Get( position, rotation )
                 .GetComponent<T>();
 
+        /// <summary>
+        /// <inheritdoc cref="Get( Transform, Quaternion, Transform )"/>
+        /// After that, gets a Component of the specified type.
+        /// </summary>
+        /// <typeparam name="T">Component type</typeparam>
+        /// <returns>Pooled Instance's Component</returns>
         public T Get<T>( Vector3 position, Quaternion rotation, Transform parent )
             where T : Component
             => Get( position, rotation, parent )
@@ -355,7 +373,7 @@ namespace BugCatcher.Utils.ObjectPooling
         /// <param name="instance">Instance to return</param>
         public void Return( GameObject instance )
         {
-            if ( !_instancesDict.ContainsKey( instance ) )
+            if ( !_instances.Contains( instance ) )
                 return;
 
             var r = instance.GetComponent<PoolResource>();
@@ -370,14 +388,17 @@ namespace BugCatcher.Utils.ObjectPooling
         /// <param name="destroyInstance">Should destroy instance?</param>
         public void Remove( GameObject instance, bool destroyInstance = true )
         {
-            if ( !_instancesDict.Remove( instance ) )
+            if ( !_instances.Remove( instance ) )
                 return;
 
-            ResetResource( instance.GetComponent<PoolResource>() );
+            var p = instance.GetComponent<PoolResource>();
+            ResetResource( p );
+            p.SendMessage( "___SetPool", null ); // Avoid calling Remove recursively OnDestroy
+            Object.Destroy( p );
             
-            if ( destroyInstance || !inst.activeInHierarchy )
+            if ( destroyInstance || !instance.activeInHierarchy )
                 Object.Destroy( instance );
-            
+
             _instancesDict.Remove( instance );
         }
 
@@ -390,6 +411,8 @@ namespace BugCatcher.Utils.ObjectPooling
             for ( int i = 0; i < _instances.Count; ++i )
             {
                 var inst = _instances[i];
+
+                // Already destroyed; ignore
                 if ( inst == null )
                     continue;
 
