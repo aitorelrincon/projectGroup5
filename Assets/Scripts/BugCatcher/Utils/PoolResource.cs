@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,7 +9,7 @@ namespace BugCatcher.Utils.ObjectPooling
     : MonoBehaviour
     {
         public Pool Pool       { get; private set; }
-        public bool IsTemplate { get; private set; }  = false;
+        public bool IsTemplate { get => Pool.IsTemplate( this ); }
         public bool IsInit     { get; private set; }  = false;
         public bool ReturnOnDisable                   = true;
 
@@ -26,18 +27,21 @@ namespace BugCatcher.Utils.ObjectPooling
 
         void OnDisable()
         {
-            if ( ReturnOnDisable && Pool is not null ) 
+            if ( ReturnOnDisable && Pool.IsValid( Pool ) ) 
                 Pool.Return( gameObject );
         }
 
         void OnDestroy()
         {
-            if ( Pool is null ) return; // This means it has already been removed from its Pool
+            if ( !Pool.IsValid( Pool ) ) return; // This means it has already been removed from its Pool
 
             if ( IsTemplate )
-                Debug.Log( $"[PoolResource] - Destroying {gameObject.name} prefab" );
-
-            Pool.Remove( gameObject );
+            {
+                Debug.Log( $"[PoolResource] - Destroying {gameObject.name} prefab clears the Pool!" );
+                Pool.Clear();
+            }
+            else
+                Pool.Remove( gameObject );
         }
 
 #pragma warning disable IDE0051 // Remove unused private members
@@ -48,10 +52,10 @@ namespace BugCatcher.Utils.ObjectPooling
             Pool = pool;
         }
 
+        [Obsolete]
         void ___MakeTemplate(  )
         {
-            Debug.Log( $"[PoolResource] - ___MakeTemplate called for {gameObject.name}" );
-            IsTemplate = true;
+            Debug.LogWarning( $"[PoolResource] - ___MakeTemplate IS OBSOLETE, REMOVE FROM CALLER" );
         }
 #pragma warning restore IDE1006 // Naming style
 #pragma warning restore IDE0051 // Remove unused private members

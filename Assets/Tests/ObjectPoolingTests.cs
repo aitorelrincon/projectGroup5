@@ -12,7 +12,7 @@ public class ObjectPoolingTests
     const int INSTANCES = 50;
 
     GameObject      prefab;
-    Pool            pool;
+    static Pool            pool;
 
     [UnitySetUp]
     public IEnumerator SetUp()
@@ -36,9 +36,12 @@ public class ObjectPoolingTests
         Assert.AreEqual( INSTANCES - 2, pool.PooledCount );
 
         pool.Return( g );
-        Object.Destroy( t );
+
+        var tog = t.gameObject;
+        pool.Remove( tog );
         yield return new WaitForEndOfFrame();
 
+        Assert.IsTrue( tog == null ); // Succesfully destroyed
         Assert.AreEqual( INSTANCES - 1, pool.TotalCount  );
         Assert.AreEqual( INSTANCES - 1, pool.PooledCount );
         yield return null; 

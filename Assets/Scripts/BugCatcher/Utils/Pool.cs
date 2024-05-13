@@ -2,6 +2,7 @@
 
 using BugCatcher.Extensions;
 using System.Collections.Generic;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -13,9 +14,10 @@ namespace BugCatcher.Utils.ObjectPooling
         const int DEFAULT_POOL_CAP      = 64;
         const int DEFAULT_PREFDICT_CAP  = DEFAULT_POOL_CAP;
         const int DEFAULT_INSTDICT_CAP  = 256;
+        public static readonly Pool Sentinel   = new();
         #endregion
 
-        #region Static variables
+        #region Private static variables
 #if A_NIGHTMARE_ON_OOP_STREET
         static MethodInfo _setTemplateAndPool = 
             typeof(PoolResource )
@@ -39,11 +41,16 @@ namespace BugCatcher.Utils.ObjectPooling
         #endregion
 
         #region Properties
-        public int PooledCount => _available.Count;
-        public int TotalCount  => _instances.Count;
+        public int  PooledCount { get => _available.Count; }
+        public int  TotalCount  { get => _instances.Count; }
         #endregion
 
         #region Constructors & destructor
+        /// <summary>
+        /// Sentinel Pool constructor
+        /// </summary>
+        private Pool() { }
+
         /// <summary>
         /// Constructs a new object Pool for the passed object.
         /// Automatically adds a PoolResource component if it
@@ -105,7 +112,7 @@ namespace BugCatcher.Utils.ObjectPooling
             // _templateSetup.BroadcastMessage( "___SetPool", { this } );
 
             _template.SendMessage( "___SetPool", this );
-            _template.SendMessage( "___MakeTemplate" );
+            // _template.SendMessage( "___MakeTemplate" );
 #endif
 
             _template.transform.parent = _prefabsParent;
@@ -218,6 +225,8 @@ namespace BugCatcher.Utils.ObjectPooling
 
             Debug.Log( $"[Pool] - All pools cleared" );
         }
+
+        public static bool IsValid( Pool pool ) => pool is not null && !ReferenceEquals( pool, Sentinel );
         #endregion
 
         #region Public instance methods
@@ -251,7 +260,7 @@ namespace BugCatcher.Utils.ObjectPooling
             // Objects can only be removed from Stacks by popping.
             // Thus, we must make sure that each and every object we're
             // popping hasn't been destroyed yet.
-            while ( ( instance = _available.Pop() ) != null && _available.Count > 0 ) { }
+            while ( ( instance = _available.Pop() ) == null && _available.Count > 0 ) { }
 
             // No available instances, create a new one
             if ( instance == null )
@@ -399,8 +408,8 @@ namespace BugCatcher.Utils.ObjectPooling
                 return;
 
             var p = instance.GetComponent<PoolResource>();
+            p.SendMessage( "___SetPool", Sentinel ); // Avoid calling Remove recursively OnDestroy
             ResetResource( p );
-            p.SendMessage( "___SetPool", null ); // Avoid calling Remove recursively OnDestroy
             Object.Destroy( p );
             
             if ( destroyInstance || !instance.activeInHierarchy )
@@ -438,6 +447,9 @@ namespace BugCatcher.Utils.ObjectPooling
         
             Debug.Log( $"[Pool] - Pool for {_prefab.gameObject.name} has been cleared" );
         }
+
+        public bool IsTemplate( GameObject gameObject ) => gameObject == _template.gameObject;
+        public bool IsTemplate( PoolResource resource ) => resource   == _template;
         #endregion
 
         #region Private instance methods
