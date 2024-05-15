@@ -980,6 +980,7 @@ GameObject:
   - component: {fileID: 1252249167}
   - component: {fileID: 1252249169}
   - component: {fileID: 1252249168}
+  - component: {fileID: 1252249170}
   m_Layer: 0
   m_Name: Terrain
   m_TagString: Untagged
@@ -1061,6 +1062,38 @@ Terrain:
   m_EnableHeightmapRayTracing: 1
   m_EnableTreesAndDetailsRayTracing: 0
   m_TreeMotionVectorModeOverride: 3
+--- !u!114 &1252249170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1252249166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3559bba178173464ab36d41532fb41b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  massPlaceMode: 0
+  spawnParent: {fileID: 2062586550}
+  spawnBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 30, y: 0, z: 30}
+  avoidBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 10, y: 0, z: 10}
+  _spawnCount: 30
+  _prefabs:
+  - prefab: {fileID: 7603668227023200464, guid: 9dad7a20891cc45498ab12d647521de0, type: 3}
+    proportion: 1
+  - prefab: {fileID: 3788385972118879130, guid: d8d8eb2e2b6810c438556ab2dcec16d2, type: 3}
+    proportion: 1
+  - prefab: {fileID: 811964479553775102, guid: 3dbddde51904a5d40824da8aad55c649, type: 3}
+    proportion: 1
+  - prefab: {fileID: 5478497465329923383, guid: 0597cf637fede114baf28b2e0f930d48, type: 3}
+    proportion: 1
+  - prefab: {fileID: 7867876050403527234, guid: 0478c976fe1910140be993e01edaafd4, type: 3}
+    proportion: 1
 --- !u!1 &1381448000 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3891644695382321159, guid: e39ee9c8b7a03784892ddaf45b81e7bd, type: 3}
@@ -1558,6 +1591,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2062586549
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2062586550}
+  m_Layer: 0
+  m_Name: PseudoTrees
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2062586550
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2062586549}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 50.0074, y: -57.050323, z: 12.085286}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2099259655 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3891644695382321159, guid: e39ee9c8b7a03784892ddaf45b81e7bd, type: 3}
@@ -1599,3 +1663,4 @@ SceneRoots:
   - {fileID: 1995171973}
   - {fileID: 1428314278}
   - {fileID: 1756765248}
+  - {fileID: 2062586550}
