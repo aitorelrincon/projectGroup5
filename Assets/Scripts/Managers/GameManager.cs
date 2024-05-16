@@ -10,6 +10,8 @@ public class GameManager : MonoShared<GameManager>
     float currentTime = 0f;
     int currentScore = 0;
 
+    Timer _timer;
+
     void Start()
     {
         _timeTmp = GetComponentInChildren<TMP_Text>();
