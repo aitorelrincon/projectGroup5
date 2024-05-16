@@ -92,13 +92,20 @@ namespace BugCatcher.Extensions
             return c is not null ? c : f();
         }
 
+        public static T GetOrAddComponent<T>( this MonoBehaviour mo )
+            where T : Component
+        {
+            if ( !mo.TryGetComponent<T>( out var c ) )
+                mo.gameObject.AddComponent<T>();
+
+            return c;
+        }
+
         public static T GetOrAddComponent<T> ( this GameObject co )
             where T : Component
         {
             if ( !co.TryGetComponent( out T c ) )
-            {
                 co.AddComponent<T>();
-            }
             
             return c;
         }

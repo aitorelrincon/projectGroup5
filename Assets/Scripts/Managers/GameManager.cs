@@ -1,21 +1,30 @@
-using BugCatcher.Utils;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+using BugCatcher.Extensions;
+using BugCatcher.Utils;
+using System.Diagnostics;
+
 public class GameManager : MonoShared<GameManager>
 {
-    TMP_Text _timeTmp, _scoreTmp;
-    float currentTime = 0f;
-    int currentScore = 0;
-
-    Timer _timer;
+    [SerializeField] TMP_Text _timeTmp, _scoreTmp;
+    
+    uint    _currentScore = 0;
+    Timer   _timer;
+    char[]  _timeFmt = new char[ 5 ];
 
     void Start()
     {
-        _timeTmp = GetComponentInChildren<TMP_Text>();
-        _scoreTmp = GetComponentInChildren<TMP_Text>();
+#if false
+        _timeTmp    = GetComponentInChildren<TMP_Text>();
+        _scoreTmp   = GetComponentInChildren<TMP_Text>();
+#else
+#endif
+
+        _timer           = this.GetOrAddComponent<Timer>();
+        _timer.CountMode = Timer.Count.Up;
 
         if (Camera.main != null)
         {
@@ -24,34 +33,18 @@ public class GameManager : MonoShared<GameManager>
             transform.rotation = Quaternion.LookRotation(Camera.main.transform.forward);
         }
     }
-   
-    void UpdateTS()
+
+    void Update()
     {
-        // Updates time and score here
-        UpdateTime();
-       // UpdateScore();
+#if false
+        _timer.TryFormatMinutes( _timeFmt );
+        _timeTmp.text = _timeFmt.ToString();
+#endif
     }
 
-    void UpdateTime()
+    public void AddScore(uint scoreToAdd)
     {
-        currentTime += Time.deltaTime;
-        _timeTmp.text = "Time: " + FormatTime(currentTime);
-    }
-
-    void UpdateScore(int scoreToAdd)
-    {
-        currentScore += scoreToAdd;
-        _scoreTmp.text = "Score: " + currentScore.ToString();
-    }
-    public void IncreaseScore()
-    {
-        UpdateScore(1); // Increase score by 1
-    }
-
-    string FormatTime(float seconds)
-    {
-        int minutes = Mathf.FloorToInt(seconds / 60);
-        int secs = Mathf.FloorToInt(seconds % 60);
-        return string.Format("{0:00}:{1:00}", minutes, secs);
+        _currentScore   += scoreToAdd;
+        _scoreTmp.text  = "Score: " + _currentScore;
     }
 }

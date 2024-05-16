@@ -7,6 +7,8 @@ using System.Diagnostics;
 using System.Linq;
 using UnityEngine;
 
+using BugCatcher.Utils;
+
 public class MassPlacePseudoTrees : MonoBehaviour
 {
     #region Nested types
@@ -106,7 +108,7 @@ public class MassPlacePseudoTrees : MonoBehaviour
 
             instances[i] = Instantiate( 
                 prefab, 
-                BC_Utils.Random.InsideBounds( spawnBounds ),
+                BC_Random.InsideBounds( spawnBounds ),
                 Quaternion.Euler( prefab.transform.eulerAngles.WithY( UnityEngine.Random.Range( 0, 359 ) ) ),
                 spawnParent
             );

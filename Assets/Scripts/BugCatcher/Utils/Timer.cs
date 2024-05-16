@@ -84,6 +84,9 @@ namespace BugCatcher.Utils
         public ReadOnlySpan<char> SpanMinutes()
             => $"{Mathf.FloorToInt( Secs / 60 ):00}:{Mathf.FloorToInt( Secs % 60 ):00}".AsSpan();
 
+        public bool TryFormatMinutes( Span<char> dest )
+            => TryFormatMinutes( dest, 0 );
+
         public bool TryFormatMinutes(Span<char> dest, int start)
         {
             // Not enough space for formatting

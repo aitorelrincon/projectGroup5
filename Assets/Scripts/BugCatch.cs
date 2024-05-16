@@ -31,7 +31,7 @@ public class BugInteraction : MonoBehaviour
                     // If it is a bug, make it disappear
                     Destroy(hit.collider.gameObject);
                     // Increase the game score
-                    gameManager.IncreaseScore();
+                    gameManager.AddScore( 1 );
                 }
             }
         }
