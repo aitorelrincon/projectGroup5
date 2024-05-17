@@ -37,11 +37,59 @@ namespace BugCatcher.Utils
             return (float)rng.NextDouble() * ( max - min ) + min;
         }
 
-        [MethodImpl( MethodImplOptions.AggressiveInlining )]
-        public static Vector3 NextUnitSphere( this System.Random rng )
+        public static float NextFloatInc( this System.Random rng )
+            => (float)rng.Next() / int.MaxValue;
+
+        public static float NextFloatInc(this System.Random rng, float min, float max)
         {
-            float unit = rng.NextFloat(0, 2);
-            return BC_Vecs.Fill3( unit );
+            if (min > max)
+                (min, max) = (max, min);
+
+            return rng.NextFloatInc() * ( max - min ) + min;
+        }
+
+        /// <summary>
+        /// Calculates a random point inside a sphere of radius 1.
+        /// </summary>
+        /// <param name="rng">system.Random</param>
+        /// <returns>Random point inside a sphere of radius 1</returns>
+        [MethodImpl( MethodImplOptions.AggressiveInlining )]
+        public static Vector3 InsideSphere( this System.Random rng )
+        {
+            float
+                phi     = rng.NextFloatInc( 0f, 2f*Mathf.PI ),          // Azimuthal angle
+                theta   = Mathf.Acos( rng.NextFloatInc( -1f, 1f ) ),    // Polar angle
+                r       = Mathf.Pow( rng.NextFloatInc(), 1f / 3f );     // Radial distance
+
+            float st = Mathf.Sin( theta );
+
+            return new(
+                    r * st * Mathf.Cos( phi ),
+                    r * st * Mathf.Sin( phi ),
+                    r * Mathf.Cos( theta )
+                );
+        }
+
+        /// <summary>
+        /// Calculates a random point inside a sphere of a given radius.
+        /// </summary>
+        /// <param name="rng">system.Random</param>
+        /// <returns>Random point inside a sphere of a given radius</returns>
+        [MethodImpl( MethodImplOptions.AggressiveInlining )]
+        public static Vector3 InsideSphere( this System.Random rng, float radius )
+        {
+            float
+                phi     = rng.NextFloatInc( 0f, 2f * Mathf.PI ),                // Azimuthal angle
+                theta   = Mathf.Acos( rng.NextFloatInc( -1f, 1f ) ),            // Polar angle
+                r       = radius * Mathf.Pow( rng.NextFloatInc(), 1f / 3f );    // Radial distance
+
+            float st = Mathf.Sin( theta );
+
+            return new(
+                    r * st * Mathf.Cos( phi ),
+                    r * st * Mathf.Sin( phi ),
+                    r * Mathf.Cos( theta )
+                );
         }
 
         /// <summary>
@@ -52,7 +100,7 @@ namespace BugCatcher.Utils
         /// <param name="bounds">Bounds</param>
         /// <returns>Position inside Bounds</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector3 InsideBounds( System.Random rng, Bounds bounds )
+        public static Vector3 InsideBounds( this System.Random rng, Bounds bounds )
             => new(
                 rng.NextFloat( bounds.min.x, bounds.max.x ),
                 rng.NextFloat( bounds.min.y, bounds.max.y ),
@@ -66,7 +114,7 @@ namespace BugCatcher.Utils
         /// <param name="bounds">Bounds</param>
         /// <returns>Position inside Bounds</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector3 InsideBounds( Bounds bounds )
+        public static Vector3 InsideBounds( this Bounds bounds )
             => new(
                 UnityEngine.Random.Range( bounds.min.x, bounds.max.x ),
                 UnityEngine.Random.Range( bounds.min.y, bounds.max.y ),

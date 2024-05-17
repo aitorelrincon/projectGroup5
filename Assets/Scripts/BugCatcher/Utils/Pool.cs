@@ -215,6 +215,14 @@ namespace BugCatcher.Utils.ObjectPooling
             return pool;
         }
 
+        public static Pool GetAndFill( PoolSetup.PoolSetupArgs args )
+        {
+            var pool = GetOrAdd( args.prefab );
+            pool.Fill( args.count );
+            Debug.Log( args.count.ToString() + " - " + pool.TotalCount );
+            return pool;
+        }
+
         /// <summary>
         /// Clears all Pools.
         /// </summary>
@@ -278,7 +286,7 @@ namespace BugCatcher.Utils.ObjectPooling
         /// </summary>
         /// <param name="parent">New parent</param>
         /// <returns>Pooled Instance</returns>
-        public GameObject Get( Transform parent)
+        public GameObject Get( Transform parent )
         {
             var instance = Get();
             instance.transform.parent = parent;

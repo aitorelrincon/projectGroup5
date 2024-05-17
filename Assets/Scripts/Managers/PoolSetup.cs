@@ -23,7 +23,7 @@ public class PoolSetup
         [SerializeField, Min(1)] int _count  = 1;
     
         public GameObject prefab { get => _prefab; }
-        public int        count  { get => _count; }
+        public int        count  { get => _count;  }
     }
 
     public bool Done { get; private set; } = false;

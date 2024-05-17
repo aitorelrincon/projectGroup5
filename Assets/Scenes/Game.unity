@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.14062807, g: 0.40680695, b: 0.6020637, a: 1}
+  m_IndirectSpecularColor: {r: 0.14204904, g: 0.40702945, b: 0.60261184, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -512,22 +512,36 @@ MonoBehaviour:
   m_GameObject: {fileID: 680369454}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25bc68c6cb69c1c45bc07b2cc7f44f2f, type: 3}
+  m_Script: {fileID: 11500000, guid: e87beef5d74a68543a69dc997a641151, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _destroyComponentWhenDone: 1
-  _resetPools: 1
-  _args:
-  - _prefab: {fileID: 0}
-    _count: 50
-  - _prefab: {fileID: 0}
-    _count: 50
-  - _prefab: {fileID: 0}
-    _count: 50
-  - _prefab: {fileID: 0}
-    _count: 50
-  - _prefab: {fileID: 0}
-    _count: 50
+  prefabsConfig:
+  - _poolArgs:
+      _prefab: {fileID: 0}
+      _count: 0
+    proportion: 0
+  - _poolArgs:
+      _prefab: {fileID: 0}
+      _count: 0
+    proportion: 0
+  defaultParent: {fileID: 0}
+  method: 2
+  exactPos: {x: 0, y: 0, z: 0}
+  bounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+  sphereRadius: 0
+  childrenAsPoints: 1
+  points: []
+  waitInitSecs: 0
+  waitLoopSecs: 5
+  spawnChance: 1
+  beforeSpawn:
+    m_PersistentCalls:
+      m_Calls: []
+  afterSpawn:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
