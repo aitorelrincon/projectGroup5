@@ -1,9 +1,12 @@
 using UnityEngine;
 
-public interface INetScaler<T>
-    where T : MonoBehaviour
+namespace BugCatcher.Interfaces
 {
-    void PreviousScale();
-    void NextScale();
-    void Scale( int index );
+    public interface INetScaler<T>
+        where T : MonoBehaviour
+    {
+        void PreviousScale();
+        void NextScale();
+        void SetScale( int index );
+    }
 }
