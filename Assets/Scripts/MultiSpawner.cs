@@ -46,7 +46,8 @@ public class MultiSpawner : MonoBehaviour
     [SerializeField] PrefabConfig[] prefabsConfig;
 
     [Header("Spawn config")]
-    [SerializeField] Transform      defaultParent = null;
+    [SerializeField] Transform      spawnedParent    = null;
+    [SerializeField] Transform      pooledParent     = null;
     [SerializeField] SpawnPosMethod method;
     [SerializeField] Vector3        exactPos;
     [SerializeField] Bounds         bounds;
@@ -77,6 +78,16 @@ public class MultiSpawner : MonoBehaviour
 
     void Start()
     {
+
+        Action<Transform, string> createIfNull = ( t, s ) => {
+            if ( t is not null ) return;
+            GameObject go = new( s );
+            t = go.transform;
+        };
+
+        createIfNull( spawnedParent, "MS_SpawnedParent" );
+        createIfNull( pooledParent, "MS_PooledParent" );
+
 #if SPAWNER_DEBUG
         if ( prefabsConfig.Length == 0 )
             Debug.LogWarning(
@@ -101,7 +112,7 @@ public class MultiSpawner : MonoBehaviour
                 );
 #endif
 
-            _pools[i] = Pool.GetAndFill( prefabsConfig[i].poolArgs );
+            _pools[i] = Pool.GetAndFill( prefabsConfig[i].poolArgs, pooledParent );
         }
 
         if ( method == SpawnPosMethod.InsideSpherePoints )
@@ -142,7 +153,8 @@ public class MultiSpawner : MonoBehaviour
                 
                 // Make sure it is on the north hemisphere
                 // in case we actually want that.
-                pos.y   *= -Convert.ToSingle( northHemisphere && pos.y < 0f ); 
+                if ( northHemisphere )
+                    pos.y = Mathf.Abs( pos.y ); 
 
                 return pos;
             },
@@ -203,15 +215,15 @@ public class MultiSpawner : MonoBehaviour
                 }
 
                 // Spawn gameObject
-                var go = p.Get( position, Quaternion.identity, defaultParent );
-                afterSpawn.Invoke( go );
+                var bug = p.Get( position, Quaternion.identity, spawnedParent );
+                afterSpawn.Invoke( bug.gameObject );
             }
 
             yield return new WaitForSeconds( waitLoopSecs );
         }
     }
 
-    public void SetSpawnParent( Transform parent ) => this.defaultParent = parent;
+    public void SetSpawnParent( Transform parent ) => this.spawnedParent = parent;
 
     public bool TrySetProportion( Pool p, float proportion )
     {

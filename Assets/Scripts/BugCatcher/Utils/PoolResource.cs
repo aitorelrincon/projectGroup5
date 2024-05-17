@@ -27,7 +27,9 @@ namespace BugCatcher.Utils.ObjectPooling
 
         void OnDisable()
         {
-            if ( ReturnOnDisable && Pool.IsValid( Pool ) ) 
+            if ( ReturnOnDisable 
+            &&   Pool.IsValid( Pool ) 
+            &&   !IsTemplate ) 
                 Pool.Return( gameObject );
         }
 

@@ -4,9 +4,9 @@ using BugCatcher.Extensions;
 public class Oscillation : MonoBehaviour
 {
     [Header("Oscillation Config")]
-    public bool oscillate = true;
+    public bool  oscillate = true;
     public float amplitude = 0.25f;
-    public float duration = 1;
+    public float duration  = 1;
     float _oscStartT, _startY, _oscMin, _oscMax;
 
     void Start()

@@ -73,6 +73,7 @@ namespace BugCatcher.Extensions
         /// <param name="f">Default function</param>
         /// <returns>Desired component or function result</returns>
         public static T GetComponentOrElse<T>( this GameObject go, [DisallowNull] Func<T> f )
+            where T : Component
         {
             var c = go.GetComponent<T>();
             return c is not null ? c : f();
@@ -87,25 +88,26 @@ namespace BugCatcher.Extensions
         /// <param name="f">Default function</param>
         /// <returns>Desired component or function result</returns>
         public static T GetComponentOrElse<T>( this Component co, [DisallowNull] Func<T> f )
+            where T : Component
         {
             var c = co.GetComponent<T>();
             return c is not null ? c : f();
         }
 
-        public static T GetOrAddComponent<T>( this MonoBehaviour mo )
+        public static T GetOrAddComponent<T>( this GameObject go )
             where T : Component
         {
-            if ( !mo.TryGetComponent<T>( out var c ) )
-                mo.gameObject.AddComponent<T>();
+            if ( !go.TryGetComponent<T>( out var c ) )
+                c = go.AddComponent<T>();
 
             return c;
         }
 
-        public static T GetOrAddComponent<T> ( this GameObject co )
+        public static T GetOrAddComponent<T> ( this Component co )
             where T : Component
         {
             if ( !co.TryGetComponent( out T c ) )
-                co.AddComponent<T>();
+                c = co.gameObject.AddComponent<T>();
             
             return c;
         }
