@@ -38,7 +38,7 @@ namespace BugCatcher.Utils
         }
 
         public static float NextFloatInc( this System.Random rng )
-            => (float)rng.Next() / int.MaxValue;
+            => (float)rng.Next() / ( int.MaxValue-1 );
 
         public static float NextFloatInc(this System.Random rng, float min, float max)
         {
