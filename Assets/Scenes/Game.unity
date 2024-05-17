@@ -515,22 +515,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e87beef5d74a68543a69dc997a641151, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabsConfig:
-  - _poolArgs:
-      _prefab: {fileID: 0}
-      _count: 0
-    proportion: 0
-  - _poolArgs:
-      _prefab: {fileID: 0}
-      _count: 0
-    proportion: 0
+  prefabsConfig: []
   defaultParent: {fileID: 0}
   method: 2
   exactPos: {x: 0, y: 0, z: 0}
   bounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
-  sphereRadius: 0
+  sphereRadius: 8
+  northHemisphere: 1
   childrenAsPoints: 1
   points: []
   waitInitSecs: 0
@@ -1189,7 +1182,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1252249167
 Transform:
   m_ObjectHideFlags: 0
