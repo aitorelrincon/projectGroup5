@@ -78,15 +78,17 @@ public class MultiSpawner : MonoBehaviour
 
     void Start()
     {
+        if ( spawnedParent.IsMissingOrNone() )
+        {
+            var go = new GameObject( "MS_SpawnedParent" );
+            spawnedParent = go.transform;
+        }
 
-        Action<Transform, string> createIfNull = ( t, s ) => {
-            if ( t is not null ) return;
-            GameObject go = new( s );
-            t = go.transform;
-        };
-
-        createIfNull( spawnedParent, "MS_SpawnedParent" );
-        createIfNull( pooledParent, "MS_PooledParent" );
+        if ( pooledParent .IsMissingOrNone() )
+        {
+            var go = new GameObject( "MS_PooledParent" );
+            pooledParent = go.transform;
+        }
 
 #if SPAWNER_DEBUG
         if ( prefabsConfig.Length == 0 )
@@ -125,7 +127,7 @@ public class MultiSpawner : MonoBehaviour
                     "This spawner is set to use it's children as spheric spawn points " +
                     "but has no children"
                 );
-            else if ( points.Length == 0 )
+            else if ( !childrenAsPoints && points.Length == 0 )
                 Debug.LogWarning(
                     HeaderStr +
                     "This spawner is set to use preset transforms as spheric spawn points " +

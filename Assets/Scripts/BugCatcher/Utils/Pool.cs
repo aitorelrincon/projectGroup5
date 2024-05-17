@@ -128,6 +128,7 @@ namespace BugCatcher.Utils.ObjectPooling
             : this( prefab, capacity )
         {
             _pooledParent = pooledParent;
+            Debug.Log( pooledParent.gameObject.name );
         }
 
         /// <summary>
@@ -519,6 +520,7 @@ namespace BugCatcher.Utils.ObjectPooling
             var instance = UnityEngine.Object.Instantiate( _template );
 
             instance.gameObject.SetActive( active );
+            instance.transform.parent = _pooledParent;
             _instancesDict.Add( instance.gameObject, this );
             _instances.Add( instance.gameObject );
 
