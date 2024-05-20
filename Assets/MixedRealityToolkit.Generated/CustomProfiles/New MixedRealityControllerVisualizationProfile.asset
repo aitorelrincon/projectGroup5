@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: New MixedRealityControllerVisualizationProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 1
-  renderMotionControllers: 1
+  renderMotionControllers: 0
   defaultControllerVisualizationType:
     reference: Microsoft.MixedReality.Toolkit.Input.MixedRealityControllerVisualizer,
       Microsoft.MixedReality.Toolkit.SDK
-  usePlatformModels: 1
+  usePlatformModels: 0
   platformModelMaterial: {fileID: 2100000, guid: 54322026142964d4084eda2478d9b1a2, type: 2}
   globalLeftControllerModel: {fileID: 1370450866519632, guid: 60b24c9a73f9f5549b32035f8c864cc7, type: 3}
   globalRightControllerModel: {fileID: 3907872044636178661, guid: ca11fe97e6a44a645ad2e7831dc6b75e, type: 3}
@@ -60,10 +60,10 @@ MonoBehaviour:
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityXRSDKMotionController,
         Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality
-    handedness: 3
-    usePlatformModels: 1
+    handedness: 2
+    usePlatformModels: 0
     platformModelMaterial: {fileID: 0}
-    overrideModel: {fileID: 0}
+    overrideModel: {fileID: 3907872044636178661, guid: ca11fe97e6a44a645ad2e7831dc6b75e, type: 3}
     controllerVisualizationType:
       reference: Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityControllerVisualizer,
         Microsoft.MixedReality.Toolkit.SDK
@@ -71,10 +71,10 @@ MonoBehaviour:
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.HPMotionController,
         Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality
-    handedness: 3
-    usePlatformModels: 1
+    handedness: 2
+    usePlatformModels: 0
     platformModelMaterial: {fileID: 0}
-    overrideModel: {fileID: 0}
+    overrideModel: {fileID: 3907872044636178661, guid: ca11fe97e6a44a645ad2e7831dc6b75e, type: 3}
     controllerVisualizationType:
       reference: Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityControllerVisualizer,
         Microsoft.MixedReality.Toolkit.SDK
@@ -82,20 +82,20 @@ MonoBehaviour:
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityXRSDKArticulatedHand,
         Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality
-    handedness: 3
+    handedness: 2
     usePlatformModels: 0
     platformModelMaterial: {fileID: 0}
-    overrideModel: {fileID: 1227372834072826, guid: 378f91dbbff9e2343b27a467467750bf, type: 3}
+    overrideModel: {fileID: 3907872044636178661, guid: ca11fe97e6a44a645ad2e7831dc6b75e, type: 3}
     controllerVisualizationType:
       reference: Microsoft.MixedReality.Toolkit.Input.BaseHandVisualizer, Microsoft.MixedReality.Toolkit
   - description: Microsoft Motion Controller
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.XRSDK.OpenXR.MicrosoftMotionController,
         Microsoft.MixedReality.Toolkit.Providers.OpenXR
-    handedness: 3
-    usePlatformModels: 1
+    handedness: 2
+    usePlatformModels: 0
     platformModelMaterial: {fileID: 0}
-    overrideModel: {fileID: 0}
+    overrideModel: {fileID: 3907872044636178661, guid: ca11fe97e6a44a645ad2e7831dc6b75e, type: 3}
     controllerVisualizationType:
       reference: Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityControllerVisualizer,
         Microsoft.MixedReality.Toolkit.SDK
@@ -103,8 +103,18 @@ MonoBehaviour:
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.XRSDK.OpenXR.HPReverbG2Controller,
         Microsoft.MixedReality.Toolkit.Providers.OpenXR
-    handedness: 3
-    usePlatformModels: 1
+    handedness: 2
+    usePlatformModels: 0
+    platformModelMaterial: {fileID: 0}
+    overrideModel: {fileID: 3907872044636178661, guid: ca11fe97e6a44a645ad2e7831dc6b75e, type: 3}
+    controllerVisualizationType:
+      reference: Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityControllerVisualizer,
+        Microsoft.MixedReality.Toolkit.SDK
+  - description: Oculus Controller
+    controllerType:
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.OpenXR.OculusController, Microsoft.MixedReality.Toolkit.Providers.OpenXR
+    handedness: 1
+    usePlatformModels: 0
     platformModelMaterial: {fileID: 0}
     overrideModel: {fileID: 0}
     controllerVisualizationType:
@@ -113,20 +123,10 @@ MonoBehaviour:
   - description: Oculus Controller
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.XRSDK.OpenXR.OculusController, Microsoft.MixedReality.Toolkit.Providers.OpenXR
-    handedness: 1
-    usePlatformModels: 1
-    platformModelMaterial: {fileID: 0}
-    overrideModel: {fileID: 1370450866519632, guid: b7913d8b23c647f40a6cf01618dfa9cc, type: 3}
-    controllerVisualizationType:
-      reference: Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityControllerVisualizer,
-        Microsoft.MixedReality.Toolkit.SDK
-  - description: Oculus Controller
-    controllerType:
-      reference: Microsoft.MixedReality.Toolkit.XRSDK.OpenXR.OculusController, Microsoft.MixedReality.Toolkit.Providers.OpenXR
     handedness: 2
-    usePlatformModels: 1
+    usePlatformModels: 0
     platformModelMaterial: {fileID: 0}
-    overrideModel: {fileID: 1370450866519632, guid: abf0b9f9eb3e0864c81ef0f82b6b6ade, type: 3}
+    overrideModel: {fileID: 3907872044636178661, guid: ca11fe97e6a44a645ad2e7831dc6b75e, type: 3}
     controllerVisualizationType:
       reference: Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityControllerVisualizer,
         Microsoft.MixedReality.Toolkit.SDK
