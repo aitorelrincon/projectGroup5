@@ -1,3 +1,4 @@
+using BugCatcher.Extensions.Functional;
 using System;
 using UnityEngine;
 using UnityEngine.Events;
@@ -9,7 +10,15 @@ namespace BugCatcher.Utils.ObjectPooling
     : MonoBehaviour
     {
         public Pool Pool       { get; private set; }
-        public bool IsTemplate { get => Pool.IsTemplate( this ); }
+        public bool IsTemplate {
+            get =>
+                ( Pool is null )
+                .Tee( ( b ) => Debug.Log( "[PoolResource] - Pool is null?: " + b ) )
+                .Map( _ => Pool )    
+                // .Map( _ => { Pool.TryGetByInstance( gameObject, out var pool ); return pool; } )
+                .IsTemplate( gameObject ); 
+        }
+
         public bool IsInit     { get; private set; }  = false;
         public bool ReturnOnDisable                   = true;
 
@@ -27,10 +36,19 @@ namespace BugCatcher.Utils.ObjectPooling
 
         void OnDisable()
         {
+            bool validPool = Pool.IsValid( Pool );
             if ( ReturnOnDisable 
-            &&   Pool.IsValid( Pool ) 
+            &&   validPool 
             &&   !IsTemplate ) 
                 Pool.Return( gameObject );
+
+            Debug.LogFormat( 
+                "[PoolResource] - OnDisable called for {0} ({1}, {2}, {3})", 
+                gameObject.name,
+                ReturnOnDisable,
+                validPool,
+                !IsTemplate
+            );
         }
 
         void OnDestroy()

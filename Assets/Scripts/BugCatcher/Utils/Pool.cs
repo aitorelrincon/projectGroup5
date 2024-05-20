@@ -1,6 +1,7 @@
 // #define A_NIGHTMARE_ON_OOP_STREET
 
 using BugCatcher.Extensions;
+using BugCatcher.Extensions.Functional;
 using System;
 using System.Collections.Generic;
 using Unity.Collections.LowLevel.Unsafe;
@@ -505,7 +506,12 @@ namespace BugCatcher.Utils.ObjectPooling
             Debug.Log( $"[Pool] - Pool for {name} has been cleared" );
         }
 
-        public bool IsTemplate( GameObject gameObject ) => gameObject == _template.gameObject;
+        public bool IsTemplate( GameObject gameObject ) =>
+            true.Tee( ( v ) => {
+                    Debug.Log( gameObject );
+                    Debug.Log( _template.gameObject );
+                } )
+                .Map( (v) => gameObject == _template.gameObject );
         public bool IsTemplate( PoolResource resource ) => resource   == _template;
         #endregion
 

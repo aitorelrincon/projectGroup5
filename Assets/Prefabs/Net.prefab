@@ -1,5 +1,58 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3583321484771259550
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3602879784538817046}
+  - component: {fileID: 9049679609899871548}
+  m_Layer: 0
+  m_Name: Collider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3602879784538817046
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3583321484771259550}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.020000001, y: -13, z: 4.5999994}
+  m_LocalScale: {x: 100, y: 100, z: 100}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3493871059660748174}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &9049679609899871548
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3583321484771259550}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.04
+  m_Center: {x: 0, y: 0.155, z: 0}
 --- !u!1 &3907872044636178661
 GameObject:
   m_ObjectHideFlags: 0
@@ -12,6 +65,9 @@ GameObject:
   - component: {fileID: -4314445072592174871}
   - component: {fileID: 282646671724021596}
   - component: {fileID: 7394688174965626379}
+  - component: {fileID: 7691849438044753421}
+  - component: {fileID: 7531416671647456991}
+  - component: {fileID: 3996177157620068260}
   m_Layer: 0
   m_Name: Net
   m_TagString: Untagged
@@ -95,6 +151,92 @@ MonoBehaviour:
   maintainScaleOnInitialization: 1
   smoothing: 0
   lifetime: 0
+--- !u!114 &7691849438044753421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3907872044636178661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2567f6ea48f1b794d83ac7333407d32b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  netRing: {fileID: 3493871059660748174}
+  netHandle: {fileID: 4482383421534165911}
+--- !u!114 &7531416671647456991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3907872044636178661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19fe7721a0743104baae38e46537705b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isFocusRequired: 1
+  InputAction:
+    id: 1
+    description: Select
+    axisConstraint: 2
+  MarkEventsAsUsed: 0
+  OnInputActionStarted:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7691849438044753421}
+        m_TargetAssemblyTypeName: NetScaler, NewAssembly
+        m_MethodName: NextScale
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnInputActionEnded:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &3996177157620068260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3907872044636178661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19fe7721a0743104baae38e46537705b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isFocusRequired: 1
+  InputAction:
+    id: 7
+    description: Grip Press
+    axisConstraint: 3
+  MarkEventsAsUsed: 0
+  OnInputActionStarted:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7691849438044753421}
+        m_TargetAssemblyTypeName: NetScaler, NewAssembly
+        m_MethodName: PreviousScale
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnInputActionEnded:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &4032410837752074853
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -105,27 +247,27 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: d6065f8294586834ba49dafe08a4855c, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.01
+      value: 0.010000003
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d6065f8294586834ba49dafe08a4855c, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.01
+      value: 0.010000001
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d6065f8294586834ba49dafe08a4855c, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.01
+      value: 0.010000001
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d6065f8294586834ba49dafe08a4855c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.00020000001
+      value: 0.00019999265
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d6065f8294586834ba49dafe08a4855c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.13
+      value: 0.17600006
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d6065f8294586834ba49dafe08a4855c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.045999996
+      value: -0.045800075
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d6065f8294586834ba49dafe08a4855c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -166,7 +308,10 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: -7511558181221131132, guid: d6065f8294586834ba49dafe08a4855c, type: 3}
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: d6065f8294586834ba49dafe08a4855c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3602879784538817046}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d6065f8294586834ba49dafe08a4855c, type: 3}
       insertIndex: -1
@@ -12334,11 +12479,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8c352da9146342347ba3f609d91d7cb3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.154
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8c352da9146342347ba3f609d91d7cb3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.0002
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8c352da9146342347ba3f609d91d7cb3, type: 3}
       propertyPath: m_LocalRotation.w

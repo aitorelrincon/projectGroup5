@@ -35,6 +35,7 @@ public static class Layers
     public const int Player             = 6;
     public const int Net                = 7;
     public const int Bug                = 8;
+    public const int LurkZone        = 9;
 
     public const int Skybox             = 30;
 

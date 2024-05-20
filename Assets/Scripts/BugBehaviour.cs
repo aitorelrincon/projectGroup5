@@ -7,11 +7,13 @@ using UnityEngine.Assertions;
 using BugCatcher.Extensions;
 using System.Runtime.CompilerServices;
 using System;
+using OVR.OpenVR;
 
 public class BugBehaviour : MonoBehaviour
 {
     #region Constants
-    public const float BASE_SPEED = 2;
+    public const float BASE_SPEED       = 100f;
+    public const float LURK_WAIT_SECS   =  10f;
     #endregion
 
     #region Nested types
@@ -22,6 +24,14 @@ public class BugBehaviour : MonoBehaviour
         Butterfly,
         Beetle,
         Bee
+    }
+
+    public enum BugState
+    {
+        Approach,
+        Lurk,
+        Attack,
+        Captured
     }
     #endregion
 
@@ -61,9 +71,9 @@ public class BugBehaviour : MonoBehaviour
 
     #region Private variables
     Transform   _bug;
-    Transform   _target;
+    Vector3     _target;
+    BugState    _state;
     Rigidbody   _rb;
-    Oscillation _osc;
     #endregion
 
     #region Properties
@@ -77,6 +87,11 @@ public class BugBehaviour : MonoBehaviour
     #endregion
 
     #region Unity methods
+    void OnEnable()
+    {
+        SetState( BugState.Approach, GameManager.Instance.player.position );
+    }
+
     void Start()
     {
         Assert.AreEqual( transform.childCount, 1 );
@@ -85,28 +100,77 @@ public class BugBehaviour : MonoBehaviour
         Debug.Log( "{" + string.Join(", ", _MovementParams ) + "}" );
 
         _bug    = transform.GetChild( 0 );
-        _target = GameManager.Instance.player;
-        
         _rb     = gameObject.GetOrAddComponent<Rigidbody>();
         {
             _rb.mass        = 500;
             _rb.useGravity  = movementParams.IsDefault;
-         
+            // _rb.isKinematic = true;
+
             _rb.constraints |= RigidbodyConstraints.FreezeRotationX 
                             |  RigidbodyConstraints.FreezeRotationZ;
         }
 
-        movementParams.Force( gameObject );
+        movementParams.Force( _bug.gameObject );
         var look    = gameObject.GetOrAddComponent<LookAtTarget>();
-        look.target = _target;
+        look.target = GameManager.Instance.player;
     }
 
     void FixedUpdate()
     {
-        var vel = ( _target.transform.position - transform.position ).normalized
-                * ( speed * BASE_SPEED );
-        
-        _rb.velocity = vel;
+        switch ( _state )
+        {
+            case BugState.Lurk:
+                if ( Mathf.Approximately( (_target - transform.position).magnitude, 0f ) )
+                    _target = GameManager.Instance.lurkPoint;
+                goto case BugState.Approach;
+
+            case BugState.Attack:
+            case BugState.Approach:
+                _rb.velocity = ( _target - transform.position ).normalized 
+                             * ( speed * BASE_SPEED * Time.fixedDeltaTime );
+                // _rb.MovePosition( _target * ( Time.fixedDeltaTime * speed * BASE_SPEED ) );
+                break;
+        }
+    }
+
+    void OnTriggerEnter( Collider other )
+    {
+        switch ( _state, other.gameObject.layer )
+        {
+            // If it was approaching, lurk around for a bit
+            case ( BugState.Approach, Layers.LurkZone ):
+                SetState( BugState.Lurk, GameManager.Instance.lurkPoint );
+                StartCoroutine( Lurk() );
+                break;
+
+            // BugState.Attack is a failsafe to make sure the player doesn't get hurt
+            // until we want to, nothing more
+            case ( BugState.Attack,   Layers.Player      ):
+                Debug.LogWarning( "[BugBehaviour] - TODO: REMOVE PLAYER HEALTH" );
+                gameObject.SetActive( false );
+                break;
+
+            // Catch the bug
+            case (               _,   Layers.Net         ):
+                GameManager.Instance.AddScore( value );
+                _state = BugState.Captured;
+                gameObject.SetActive( false );
+                break;
+        }
     }
     #endregion
+
+    void SetState( BugState state, Vector3? target )
+    {
+        Debug.Log( state );
+        _state = state;
+        if ( target.HasValue )
+            _target = target.Value;
+    }
+
+    IEnumerator Lurk()
+    {
+        yield return new WaitForSeconds( LURK_WAIT_SECS );
+        SetState( BugState.Attack, GameManager.Instance.player.position );
+    }
 }
