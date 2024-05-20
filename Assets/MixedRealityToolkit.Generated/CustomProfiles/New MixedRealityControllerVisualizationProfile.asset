@@ -19,9 +19,9 @@ MonoBehaviour:
       Microsoft.MixedReality.Toolkit.SDK
   usePlatformModels: 0
   platformModelMaterial: {fileID: 2100000, guid: 54322026142964d4084eda2478d9b1a2, type: 2}
-  globalLeftControllerModel: {fileID: 1370450866519632, guid: 60b24c9a73f9f5549b32035f8c864cc7, type: 3}
+  globalLeftControllerModel: {fileID: 6102239342676196643, guid: 5ed67ceda41006a4bba526d03a0b6d89, type: 3}
   globalRightControllerModel: {fileID: 3907872044636178661, guid: ca11fe97e6a44a645ad2e7831dc6b75e, type: 3}
-  globalLeftHandVisualizer: {fileID: 61451597023024772, guid: 6080fb9e3b49fda449e3d70daf6d2254, type: 3}
+  globalLeftHandVisualizer: {fileID: 6102239342676196643, guid: 5ed67ceda41006a4bba526d03a0b6d89, type: 3}
   globalRightHandVisualizer: {fileID: 3907872044636178661, guid: ca11fe97e6a44a645ad2e7831dc6b75e, type: 3}
   controllerVisualizationSettings:
   - description: Windows Mixed Reality Controller
@@ -116,7 +116,7 @@ MonoBehaviour:
     handedness: 1
     usePlatformModels: 0
     platformModelMaterial: {fileID: 0}
-    overrideModel: {fileID: 0}
+    overrideModel: {fileID: 6102239342676196643, guid: 5ed67ceda41006a4bba526d03a0b6d89, type: 3}
     controllerVisualizationType:
       reference: Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityControllerVisualizer,
         Microsoft.MixedReality.Toolkit.SDK

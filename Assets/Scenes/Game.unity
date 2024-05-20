@@ -1105,16 +1105,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6f234762a1aeb14ba4749ed9ca6ee04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  move: 1
-  size: {x: 0.5, y: 0.5, z: 0.5}
-  duration: 0.75
-  _bounds:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0, y: 0, z: 0}
-  _velocity: {x: 0, y: 0, z: 0}
-  _startPos: {x: 0, y: 0, z: 0}
-  _nextPos: {x: 0, y: 0, z: 0}
-  _startT: 0
 --- !u!1 &1201777180 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3891644695382321159, guid: e39ee9c8b7a03784892ddaf45b81e7bd, type: 3}
