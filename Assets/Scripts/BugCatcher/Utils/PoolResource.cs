@@ -36,10 +36,11 @@ namespace BugCatcher.Utils.ObjectPooling
 
         void OnDisable()
         {
-            bool validPool = Pool.IsValid( Pool );
+            bool validPool  = Pool.IsValid( Pool ),
+                 isInstance = !IsTemplate;
             if ( ReturnOnDisable 
             &&   validPool 
-            &&   !IsTemplate ) 
+            &&   isInstance ) 
                 Pool.Return( gameObject );
 
             Debug.LogFormat( 
@@ -47,7 +48,7 @@ namespace BugCatcher.Utils.ObjectPooling
                 gameObject.name,
                 ReturnOnDisable,
                 validPool,
-                !IsTemplate
+                isInstance
             );
         }
 

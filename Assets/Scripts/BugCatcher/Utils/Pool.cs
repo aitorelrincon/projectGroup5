@@ -540,7 +540,8 @@ namespace BugCatcher.Utils.ObjectPooling
         void ResetResource( PoolResource resource )
         {
             resource.OnReturn();
-            resource.gameObject.SetActive( false );
+            if ( resource.gameObject.activeSelf )
+                resource.gameObject.SetActive( false );
 
             // TODO: Maybe we could have a default parent for Pooled objects...
             // 17/05/2024 -> Done
