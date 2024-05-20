@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.14062807, g: 0.40680695, b: 0.6020637, a: 1}
+  m_IndirectSpecularColor: {r: 0.14204904, g: 0.40702945, b: 0.60261184, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -488,7 +488,8 @@ MonoBehaviour:
       _count: 50
     proportion: 1
     _serialized: 0
-  defaultParent: {fileID: 680369455}
+  spawnedParent: {fileID: 0}
+  pooledParent: {fileID: 0}
   method: 2
   exactPos: {x: 0, y: 0, z: 0}
   bounds:
@@ -894,6 +895,69 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 933257825308829163, guid: e39ee9c8b7a03784892ddaf45b81e7bd, type: 3}
   m_PrefabInstance: {fileID: 977185253}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &994654513
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 994654514}
+  - component: {fileID: 994654515}
+  m_Layer: 0
+  m_Name: BugBehaviourParams
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &994654514
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 994654513}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &994654515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 994654513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 358eabd630cafbe449343a9bebc19efb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _wormSpeed: 0.25
+  _wormValue: 100
+  _grassSpeed: 0.5
+  _grassValue: 300
+  _butterSpeed: 1
+  _butterValue: 600
+  _butterOscillate: 1
+  _butterAmplitude: 0.25
+  _butterDuration: 1
+  _beetleSpeed: 2
+  _beetleValue: 1200
+  _beetleErraticMove: 1
+  _beetleSize: {x: 0.8, y: 0.8, z: 0.8}
+  _beetleDuration: 1
+  _beeSpeed: 4
+  _beeValue: 10000
+  _beeErraticMove: 1
+  _beeSize: {x: 1, y: 1, z: 1}
+  _beeDuration: 0.75
 --- !u!1001 &1044617222
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -992,6 +1056,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3891644695382321159, guid: e39ee9c8b7a03784892ddaf45b81e7bd, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1044617224}
+    - targetCorrespondingSourceObject: {fileID: 3891644695382321159, guid: e39ee9c8b7a03784892ddaf45b81e7bd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1044617226}
   m_SourcePrefab: {fileID: 100100000, guid: e39ee9c8b7a03784892ddaf45b81e7bd, type: 3}
 --- !u!4 &1044617223 stripped
 Transform:
@@ -1005,7 +1072,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 800728797}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 57c35cbd2dfd2c244a219935713801ad, type: 3}
   m_Name: 
@@ -1026,6 +1093,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 963194228}
+--- !u!114 &1044617226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 800728797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6f234762a1aeb14ba4749ed9ca6ee04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  move: 1
+  size: {x: 0.5, y: 0.5, z: 0.5}
+  duration: 0.75
 --- !u!1 &1201777180 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3891644695382321159, guid: e39ee9c8b7a03784892ddaf45b81e7bd, type: 3}
@@ -1814,3 +1896,4 @@ SceneRoots:
   - {fileID: 1756765248}
   - {fileID: 2062586550}
   - {fileID: 680369455}
+  - {fileID: 994654514}

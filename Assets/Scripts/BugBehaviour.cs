@@ -23,24 +23,6 @@ public class BugBehaviour : MonoBehaviour
         Beetle,
         Bee
     }
-
-    [System.Serializable]
-    public struct OscillationParams
-    {
-        public bool   enabled;
-        public float  amplitude;
-        public float  duration;
-
-        public static readonly OscillationParams Original = new( true, 0.25f, 1.0f );
-        public static readonly OscillationParams Disabled = default;
-
-        public OscillationParams( bool enabled, float amplitude, float duration )
-        {
-            this.enabled    = enabled;
-            this.amplitude  = amplitude;
-            this.duration   = duration;
-        }
-    }
     #endregion
 
     #region Bug stats
@@ -62,13 +44,13 @@ public class BugBehaviour : MonoBehaviour
         10000,
     };
 
-    static readonly OscillationParams[] _OscillationParams = 
+    static readonly MovementParams[] _MovementParams = 
     {
-        OscillationParams.Disabled,
-        OscillationParams.Disabled,
-        OscillationParams.Original,
-        OscillationParams.Original,
-        OscillationParams.Original
+        MovementParams.Default,
+        MovementParams.Default,
+        MovementParams.Oscillation( true, 0.25f, 1f ),
+        MovementParams.ErraticBounds( true, BC_Vecs.Fill3( 0.8f ), 1.00f ),
+        MovementParams.ErraticBounds( true, Vector3.one, 0.75f )
     };
     #endregion
 
@@ -85,12 +67,12 @@ public class BugBehaviour : MonoBehaviour
     #endregion
 
     #region Properties
-    public float Speed { [MethodImpl( MethodImplOptions.AggressiveInlining )] get => _Speed[(int)_kind]; }
-    public uint  Value { [MethodImpl( MethodImplOptions.AggressiveInlining )] get => _Value[(int)_kind]; }
-    public OscillationParams OscillationParam
+    public float speed { [MethodImpl( MethodImplOptions.AggressiveInlining )] get => _Speed[(int)_kind]; }
+    public uint  value { [MethodImpl( MethodImplOptions.AggressiveInlining )] get => _Value[(int)_kind]; }
+    public MovementParams movementParams
     {
         [MethodImpl( MethodImplOptions.AggressiveInlining )]
-        get => _OscillationParams[(int)_kind];
+        get => _MovementParams[(int)_kind];
     }
     #endregion
 
@@ -98,27 +80,23 @@ public class BugBehaviour : MonoBehaviour
     void Start()
     {
         Assert.AreEqual( transform.childCount, 1 );
-        
+        Debug.Log( "{" + string.Join(", ", _Speed ) + "}" );
+        Debug.Log( "{" + string.Join(", ", _Value ) + "}" );
+        Debug.Log( "{" + string.Join(", ", _MovementParams ) + "}" );
+
         _bug    = transform.GetChild( 0 );
         _target = GameManager.Instance.player;
         
         _rb     = gameObject.GetOrAddComponent<Rigidbody>();
         {
             _rb.mass        = 500;
-            _rb.useGravity  = !OscillationParam.enabled;
+            _rb.useGravity  = movementParams.IsDefault;
          
             _rb.constraints |= RigidbodyConstraints.FreezeRotationX 
                             |  RigidbodyConstraints.FreezeRotationZ;
         }
 
-        _osc    = _bug.GetOrAddComponent<Oscillation>();
-        {
-            _osc.enabled   = OscillationParam.enabled;
-            _osc.oscillate = OscillationParam.enabled;
-            _osc.amplitude = OscillationParam.amplitude;
-            _osc.duration  = OscillationParam.duration;
-        }
-
+        movementParams.Force( gameObject );
         var look    = gameObject.GetOrAddComponent<LookAtTarget>();
         look.target = _target;
     }
@@ -126,7 +104,7 @@ public class BugBehaviour : MonoBehaviour
     void FixedUpdate()
     {
         var vel = ( _target.transform.position - transform.position ).normalized
-                * ( Speed * BASE_SPEED );
+                * ( speed * BASE_SPEED );
         
         _rb.velocity = vel;
     }

@@ -12,11 +12,40 @@ using UV4 = UnityEngine.Vector4;
 using SNV2 = System.Numerics.Vector2;
 using SNV3 = System.Numerics.Vector3;
 using SNV4 = System.Numerics.Vector4;
+using System;
 
 namespace BugCatcher.Extensions
 {
     public static class BC_Vecs
     {
+        public struct Bool3
+        {
+            public bool x, y, z;
+
+            public Bool3( bool b )
+            {
+                x = b;
+                y = b;
+                z = b;
+            }
+
+            public Bool3( bool x, bool y, bool z )
+            {
+                this.x = x; 
+                this.y = y; 
+                this.z = z;
+            }
+
+            [MethodImpl( MethodImplOptions.AggressiveInlining )]
+            public bool All() => x && y && z;
+            
+            [MethodImpl( MethodImplOptions.AggressiveInlining )]
+            public bool Any() => x || y || z;
+
+            [MethodImpl( MethodImplOptions.AggressiveInlining )]
+            public static implicit operator bool( Bool3 b3 ) => b3.All();
+        }
+
 #if BC_VECS_EXTENSION
         #region UnityEngine's Vectors extensions
         // Set[Axis]
@@ -187,6 +216,54 @@ namespace BugCatcher.Extensions
 
         [MethodImpl( MethodImplOptions.AggressiveInlining )]
         public static UV4 ToUnity( this SNV4 v ) => new UV4( v.X, v.Y, v.Z, v.W );
+
+        // Map (Vector map)
+        [MethodImpl( MethodImplOptions.AggressiveInlining )]
+        public static UV2 MapV( this UV2 v, Func<float, float> f ) => new( f( v.x ), f( v.y ) );
+
+        [MethodImpl( MethodImplOptions.AggressiveInlining )]
+        public static UV2I MapV( this UV2I v, Func<int, int> f ) => new( f( v.x ), f( v.y ) );
+
+        [MethodImpl( MethodImplOptions.AggressiveInlining )]
+        public static UV3 MapV( this UV3 v, Func<float, float> f ) => new( f( v.x ), f( v.y ), f( v.z ) );
+
+        [MethodImpl( MethodImplOptions.AggressiveInlining )]
+        public static UV3I MapV( this UV3I v, Func<int, int> f ) => new( f( v.x ), f( v.y ), f( v.z ) );
+        
+        [MethodImpl( MethodImplOptions.AggressiveInlining )]
+        public static UV4 MapV( this UV4 v, Func<float, float> f ) => new( f( v.x ), f( v.y ), f( v.z ), f( v.w ) );
+
+        // MapI (Vector map with index)
+        [MethodImpl( MethodImplOptions.AggressiveInlining )]
+        public static UV2 MapI( this UV2 v, Func<float, int, float> f ) => new( f( v.x, 0 ), f( v.y, 1 ) );
+
+        [MethodImpl( MethodImplOptions.AggressiveInlining )]
+        public static UV2I MapI( this UV2I v, Func<int, int, int> f )   => new( f( v.x, 0 ), f( v.y, 1 ) );
+
+        [MethodImpl( MethodImplOptions.AggressiveInlining )]
+        public static UV3 MapI( this UV3 v, Func<float, int, float> f ) => new( f( v.x, 0 ), f( v.y, 1 ), f( v.z, 2 ) );
+
+        [MethodImpl( MethodImplOptions.AggressiveInlining )]
+        public static UV3I MapI( this UV3I v, Func<int, int, int> f )   => new( f( v.x, 0 ), f( v.y, 1 ), f( v.z, 2 ) );
+
+        [MethodImpl( MethodImplOptions.AggressiveInlining )]
+        public static UV4 MapI( this UV4 v, Func<float, int, float> f ) => new( f( v.x, 0 ), f( v.y, 1 ), f( v.z, 2 ), f( v.w, 3 ) );
+
+        // MapI (Vector map with index)
+        [MethodImpl( MethodImplOptions.AggressiveInlining )]
+        public static UV2 ZipMapV( this UV2 v, UV2 u, Func<float, float, float> f ) => new( f( v.x, u.x ), f( v.y, u.y ) );
+
+        [MethodImpl( MethodImplOptions.AggressiveInlining )]
+        public static UV2I ZipMapV( this UV2I v, UV2I u, Func<int, int, int> f )    => new( f( v.x, u.x ), f( v.y, u.y ) );
+
+        [MethodImpl( MethodImplOptions.AggressiveInlining )]
+        public static UV3 ZipMapV( this UV3 v, UV3 u, Func<float, float, float> f ) => new( f( v.x, u.x ), f( v.y, u.y ), f( v.z, u.z ) );
+
+        [MethodImpl( MethodImplOptions.AggressiveInlining )]
+        public static UV3I ZipMapV( this UV3I v, UV3I u, Func<int, int, int> f )    => new( f( v.x, u.x ), f( v.y, u.y ), f( v.z, u.z ) );
+
+        [MethodImpl( MethodImplOptions.AggressiveInlining )]
+        public static UV4 ZipMapV( this UV4 v, UV4 u, Func<float, float, float> f ) => new( f( v.x, 0 ), f( v.y, u.y ), f( v.z, u.z ), f( v.w, u.w ) );
         #endregion
 #else
         #region Extensions as static methods
