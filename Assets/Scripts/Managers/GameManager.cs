@@ -6,16 +6,20 @@ using TMPro;
 using BugCatcher.Extensions;
 using BugCatcher.Utils;
 using System.Diagnostics;
+using UnityEngine.Assertions;
 
 public class GameManager : MonoShared<GameManager>
 {
-    [SerializeField] TMP_Text _timeTmp, _scoreTmp;
-    
+    [SerializeField] TMP_Text   _timeTmp, _scoreTmp;
+    [SerializeField] Transform  _player;
+
     uint    _currentScore = 0;
     Timer   _timer;
     char[]  _timeFmt = new char[ 5 ];
 
-    void Start()
+    public Transform player { get => _player; }
+
+    protected override void OnAwake()
     {
 #if false
         _timeTmp    = GetComponentInChildren<TMP_Text>();
@@ -24,6 +28,7 @@ public class GameManager : MonoShared<GameManager>
 #endif
 
         _timer           = this.GetOrAddComponent<Timer>();
+        Assert.IsNotNull( _timer );
         _timer.CountMode = Timer.Count.Up;
 
         if (Camera.main != null)
@@ -32,6 +37,8 @@ public class GameManager : MonoShared<GameManager>
             transform.position = Camera.main.transform.position + Camera.main.transform.forward * 2f;
             transform.rotation = Quaternion.LookRotation(Camera.main.transform.forward);
         }
+
+        _player = Camera.main.transform;
     }
 
     void Update()

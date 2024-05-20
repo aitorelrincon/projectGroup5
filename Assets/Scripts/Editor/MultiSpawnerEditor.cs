@@ -11,7 +11,8 @@ using UnityEditorInternal;
 public class MultiSpawnerEditor : Editor
 {
     #region Prefabs config
-    const string s_defaultParent  = "defaultParent";
+    const string s_spawnedParent  = "spawnedParent";
+    const string s_pooledParent   = "pooledParent";
     const string s_prefabsConfig  = "prefabsConfig";
     #endregion
 
@@ -80,7 +81,8 @@ public class MultiSpawnerEditor : Editor
         // prefabs.DoLayoutList();
 
         // Spawn config
-        EditorGUILayout.PropertyField( serializedObject.FindProperty( s_defaultParent ) );
+        EditorGUILayout.PropertyField( serializedObject.FindProperty( s_spawnedParent ) );
+        EditorGUILayout.PropertyField( serializedObject.FindProperty( s_pooledParent ) );
         EditorGUILayout.PropertyField( serializedObject.FindProperty( s_method ) );
         switch ( (SPM) serializedObject.FindProperty(s_method).enumValueIndex )
         {

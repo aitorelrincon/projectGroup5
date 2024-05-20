@@ -1,10 +1,12 @@
 // #define A_NIGHTMARE_ON_OOP_STREET
 
 using BugCatcher.Extensions;
+using System;
 using System.Collections.Generic;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.Assertions;
+using static BugCatcher.Utils.Timer;
 
 namespace BugCatcher.Utils.ObjectPooling
 {
@@ -38,6 +40,7 @@ namespace BugCatcher.Utils.ObjectPooling
             _prefab;
         
         PoolResource            _template;
+        Transform               _pooledParent = null;
         #endregion
 
         #region Properties
@@ -74,13 +77,13 @@ namespace BugCatcher.Utils.ObjectPooling
             if ( _prefabsParent is null )
             {
                 var go = new GameObject( "PoolsPrefabsParent" );
-                Object.DontDestroyOnLoad( go );
+                UnityEngine.Object.DontDestroyOnLoad( go );
                 _prefabsParent = go.transform;
             }
 
             _prefab   = ( original, original.transform.rotation, original.transform.localScale );
             _template = original.GetComponentOrElse(() => { 
-                var r = Object.Instantiate( _prefab.gameObject )
+                var r = UnityEngine.Object.Instantiate( _prefab.gameObject )
                               .AddComponent<PoolResource>();
                 
                 return r;
@@ -99,12 +102,12 @@ namespace BugCatcher.Utils.ObjectPooling
             // Plus, some of the score for the project comes from doing
             // a justified use of both SendMessage & BroadcastMessage.
             // EDIT: Wait I'm stupid. We can just use SendMessage. Less expensive.
-            if ( _templateSetup is null )
-            {
-                var go = new GameObject( "PoolsTemplateSetup" );
-                Object.DontDestroyOnLoad( go );
-                // _templateSetup = go.transform;
-            }
+            // if ( _templateSetup is null )
+            // {
+            //     var go = new GameObject( "PoolsTemplateSetup" );
+            //     Object.DontDestroyOnLoad( go );
+            //     // _templateSetup = go.transform;
+            // }
 
             // _template.transform.parent = _templateSetup;
             // if ( _templateSetup.childCount > 1 )
@@ -114,11 +117,18 @@ namespace BugCatcher.Utils.ObjectPooling
             _template.SendMessage( "___SetPool", this );
             // _template.SendMessage( "___MakeTemplate" );
 #endif
-
+            _template.gameObject.SetActive( false );
             _template.transform.parent = _prefabsParent;
             _available = new( capacity );
             _instances = new( capacity );
             _prefabsDict.Add( _prefab.gameObject, this );
+        }
+
+        private Pool( GameObject prefab, Transform pooledParent, int capacity = DEFAULT_POOL_CAP )
+            : this( prefab, capacity )
+        {
+            _pooledParent = pooledParent;
+            Debug.Log( pooledParent.gameObject.name );
         }
 
         /// <summary>
@@ -147,6 +157,24 @@ namespace BugCatcher.Utils.ObjectPooling
 
             if ( !TryGetByPrefab( prefab, out var prefPool ) )
                 prefPool = new( prefab, creationCapacity );
+
+            return prefPool;
+        }
+
+        /// <summary>
+        /// Retrieves the Pool associated with the passed prefab,
+        /// or creates one by default if it doesn't exist.
+        /// </summary>
+        /// <param name="prefab">Original object</param>
+        /// <param name="creationCapacity">Capacity when creating a new Pool</param>
+        /// <returns></returns>
+        public static Pool GetOrAdd( GameObject prefab, Transform pooledParent, int creationCapacity = DEFAULT_POOL_CAP )
+        {
+            if ( TryGetByInstance( prefab, out var instPool ) )
+                return instPool;
+
+            if ( !TryGetByPrefab( prefab, out var prefPool ) )
+                prefPool = new( prefab, pooledParent, creationCapacity );
 
             return prefPool;
         }
@@ -220,6 +248,26 @@ namespace BugCatcher.Utils.ObjectPooling
             var pool = GetOrAdd( args.prefab );
             pool.Fill( args.count );
             Debug.Log( args.count.ToString() + " - " + pool.TotalCount );
+            return pool;
+        }
+
+        /// <summary>
+        /// Fills a Pool with 'count' instances of the 'prefab'.
+        /// </summary>
+        /// <param name="prefab">Original prefab</param>
+        /// <param name="count">Instances to add</param>
+        /// <returns></returns>
+        public static Pool GetAndFill( GameObject prefab, int count, Transform pooledParent )
+        {
+            var pool = GetOrAdd( prefab, pooledParent );
+            pool.Fill( count );
+            return pool;
+        }
+
+        public static Pool GetAndFill( PoolSetup.PoolSetupArgs args, Transform pooledParent )
+        {
+            var pool = GetOrAdd( args.prefab, pooledParent );
+            pool.Fill( args.count );
             return pool;
         }
 
@@ -418,10 +466,10 @@ namespace BugCatcher.Utils.ObjectPooling
             var p = instance.GetComponent<PoolResource>();
             p.SendMessage( "___SetPool", Sentinel ); // Avoid calling Remove recursively OnDestroy
             ResetResource( p );
-            Object.Destroy( p );
+            UnityEngine.Object.Destroy( p );
             
             if ( destroyInstance || !instance.activeInHierarchy )
-                Object.Destroy( instance );
+                UnityEngine.Object.Destroy( instance );
 
             _instancesDict.Remove( instance );
         }
@@ -432,6 +480,7 @@ namespace BugCatcher.Utils.ObjectPooling
         /// <param name="destroyInstances">Should destroy all instances?</param>
         public void Clear( bool destroyInstances = true )
         {
+            var name = _prefab.gameObject.name.Clone();
             for ( int i = 0; i < _instances.Count; ++i )
             {
                 var inst = _instances[i];
@@ -443,7 +492,7 @@ namespace BugCatcher.Utils.ObjectPooling
                 _instancesDict.Remove( inst );
 
                 if ( destroyInstances || !inst.activeInHierarchy )
-                    Object.Destroy( inst );
+                    UnityEngine.Object.Destroy( inst );
             }
 
             _prefabsDict.Remove( _prefab.gameObject );
@@ -453,7 +502,7 @@ namespace BugCatcher.Utils.ObjectPooling
             _available  = null;
             _instances  = null;
         
-            Debug.Log( $"[Pool] - Pool for {_prefab.gameObject.name} has been cleared" );
+            Debug.Log( $"[Pool] - Pool for {name} has been cleared" );
         }
 
         public bool IsTemplate( GameObject gameObject ) => gameObject == _template.gameObject;
@@ -468,9 +517,10 @@ namespace BugCatcher.Utils.ObjectPooling
         /// <returns>New Instance</returns>
         PoolResource CreateInstance( bool active = true )
         {
-            var instance = Object.Instantiate( _template );
+            var instance = UnityEngine.Object.Instantiate( _template );
 
             instance.gameObject.SetActive( active );
+            instance.transform.parent = _pooledParent;
             _instancesDict.Add( instance.gameObject, this );
             _instances.Add( instance.gameObject );
 
@@ -487,7 +537,8 @@ namespace BugCatcher.Utils.ObjectPooling
             resource.gameObject.SetActive( false );
 
             // TODO: Maybe we could have a default parent for Pooled objects...
-            resource.transform.parent     = null;
+            // 17/05/2024 -> Done
+            resource.transform.parent     = _pooledParent;
             resource.transform.rotation   = _prefab.rotation;
             resource.transform.localScale = _prefab.localScale;
         }

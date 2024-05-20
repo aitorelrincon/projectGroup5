@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Linq;
+using UnityEngine.Assertions;
 
 /// <summary>
 /// Static class containing const ints for Unity layers.
@@ -20,12 +21,20 @@ public static class Layers
             .Select( (v) => (int)v.GetRawConstantValue() )
             .ToArray();
 
+    static Layers()
+    {
+        Assert.AreEqual( Array.Distinct().Count(), Array.Length );
+    }
+
     public const int Default            = 0;
     public const int TransparentFX      = 1;
     public const int IgnoreRaycast      = 2;
     public const int Ground             = 3;
     public const int Water              = 4;
     public const int UI                 = 5;
+    public const int Player             = 6;
+    public const int Net                = 7;
+    public const int Bug                = 8;
 
     public const int Skybox             = 30;
 
