@@ -162,7 +162,7 @@ public class BugBehaviour : MonoBehaviour
 
     void SetState( BugState state, Vector3? target )
     {
-        // Debug.Log( state );
+        //  Debug.Log( state );
         _state = state;
         if ( target.HasValue )
             _target = target.Value;
