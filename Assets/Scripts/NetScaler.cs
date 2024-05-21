@@ -5,8 +5,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using BugCatcher.Interfaces;
 using BugCatcher.Extensions;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
 
-public class NetScaler : MonoBehaviour, INetScaler<NetScaler>
+public class NetScaler : MonoBehaviour, INetScaler<NetScaler>, IMixedRealityInputHandler
 {
     public Transform netRing;
     public Transform netHandle;
@@ -34,14 +36,14 @@ public class NetScaler : MonoBehaviour, INetScaler<NetScaler>
 #if UNITY_EDITOR
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            NextScale();
-        }
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            PreviousScale();
-        }
+        //if (Input.GetKeyDown(KeyCode.UpArrow))
+        //{
+        //    NextScale();
+        //}
+        //if (Input.GetKeyDown(KeyCode.DownArrow))
+        //{
+        //    PreviousScale();
+        //}
     }
 #endif
 
@@ -78,5 +80,23 @@ public class NetScaler : MonoBehaviour, INetScaler<NetScaler>
         netHandle.localPosition = netHandle.localPosition.WithY( baseHandle[1] * heightScales[i]  );
         netRing.localPosition   = netRing.localPosition.WithY( baseRingY * heightScales[i] );
 #endif
+    }
+
+    public void OnInputUp(InputEventData eventData)
+    {
+        if (eventData.MixedRealityInputAction.Description == "Trigger" && eventData.Handedness == Handedness.Right)
+        {
+            NextScale();
+        }
+
+        if (eventData.MixedRealityInputAction.Description == "Grip Press" && eventData.Handedness == Handedness.Right)
+        {
+            PreviousScale();
+        }
+    }
+
+    public void OnInputDown(InputEventData eventData)
+    {
+        throw new System.NotImplementedException();
     }
 }
