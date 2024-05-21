@@ -7001,3 +7001,83 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
+  - controllerType:
+      reference: Microsoft.MixedReality.Toolkit.Input.UnityInput.GenericJoystickController,
+        Microsoft.MixedReality.Toolkit
+    handedness: 0
+    interactions: []
+  - controllerType:
+      reference: Microsoft.MixedReality.Toolkit.Input.UnityInput.GenericJoystickController,
+        Microsoft.MixedReality.Toolkit
+    handedness: 0
+    interactions: []
+  - controllerType:
+      reference: Microsoft.MixedReality.Toolkit.Input.UnityInput.GenericJoystickController,
+        Microsoft.MixedReality.Toolkit
+    handedness: 0
+    interactions: []
+  - controllerType:
+      reference: Microsoft.MixedReality.Toolkit.Input.UnityInput.GenericJoystickController,
+        Microsoft.MixedReality.Toolkit
+    handedness: 0
+    interactions: []
+  - controllerType:
+      reference: Microsoft.MixedReality.Toolkit.Input.UnityInput.GenericJoystickController,
+        Microsoft.MixedReality.Toolkit
+    handedness: 0
+    interactions: []
+  - controllerType:
+      reference: Microsoft.MixedReality.Toolkit.Input.UnityInput.GenericJoystickController,
+        Microsoft.MixedReality.Toolkit
+    handedness: 0
+    interactions: []
+  - controllerType:
+      reference: Microsoft.MixedReality.Toolkit.Input.UnityInput.GenericJoystickController,
+        Microsoft.MixedReality.Toolkit
+    handedness: 0
+    interactions: []
+  - controllerType:
+      reference: Microsoft.MixedReality.Toolkit.Input.UnityInput.GenericJoystickController,
+        Microsoft.MixedReality.Toolkit
+    handedness: 0
+    interactions: []
+  - controllerType:
+      reference: Microsoft.MixedReality.Toolkit.Input.UnityInput.GenericJoystickController,
+        Microsoft.MixedReality.Toolkit
+    handedness: 0
+    interactions: []
+  - controllerType:
+      reference: Microsoft.MixedReality.Toolkit.Input.UnityInput.GenericJoystickController,
+        Microsoft.MixedReality.Toolkit
+    handedness: 0
+    interactions: []
+  - controllerType:
+      reference: Microsoft.MixedReality.Toolkit.Input.UnityInput.GenericJoystickController,
+        Microsoft.MixedReality.Toolkit
+    handedness: 0
+    interactions: []
+  - controllerType:
+      reference: Microsoft.MixedReality.Toolkit.Input.UnityInput.GenericJoystickController,
+        Microsoft.MixedReality.Toolkit
+    handedness: 0
+    interactions: []
+  - controllerType:
+      reference: Microsoft.MixedReality.Toolkit.Input.UnityInput.GenericJoystickController,
+        Microsoft.MixedReality.Toolkit
+    handedness: 0
+    interactions: []
+  - controllerType:
+      reference: Microsoft.MixedReality.Toolkit.Input.UnityInput.GenericJoystickController,
+        Microsoft.MixedReality.Toolkit
+    handedness: 0
+    interactions: []
+  - controllerType:
+      reference: Microsoft.MixedReality.Toolkit.Input.UnityInput.GenericJoystickController,
+        Microsoft.MixedReality.Toolkit
+    handedness: 0
+    interactions: []
+  - controllerType:
+      reference: Microsoft.MixedReality.Toolkit.Input.UnityInput.GenericJoystickController,
+        Microsoft.MixedReality.Toolkit
+    handedness: 0
+    interactions: []

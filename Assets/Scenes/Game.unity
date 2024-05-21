@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.14062807, g: 0.40680695, b: 0.6020637, a: 1}
+  m_IndirectSpecularColor: {r: 0.14204904, g: 0.40702945, b: 0.60261184, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1206,6 +1206,18 @@ PrefabInstance:
     - target: {fileID: 3907872044636178661, guid: ca11fe97e6a44a645ad2e7831dc6b75e, type: 3}
       propertyPath: m_Name
       value: Net
+      objectReference: {fileID: 0}
+    - target: {fileID: 7531416671647456991, guid: ca11fe97e6a44a645ad2e7831dc6b75e, type: 3}
+      propertyPath: InputAction.id
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7531416671647456991, guid: ca11fe97e6a44a645ad2e7831dc6b75e, type: 3}
+      propertyPath: InputAction.description
+      value: Grip Press
+      objectReference: {fileID: 0}
+    - target: {fileID: 7531416671647456991, guid: ca11fe97e6a44a645ad2e7831dc6b75e, type: 3}
+      propertyPath: InputAction.axisConstraint
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
