@@ -21,7 +21,8 @@ public class PhysicsSetup
             return false;
         }
 
-        Physics.IgnoreLayerCollision( Layers.Bug, Layers.Bug );
+        Physics.IgnoreLayerCollision( Layers.Bug, Layers.Bug     );
+        Physics.IgnoreLayerCollision( Layers.Bug, Layers.Default );
 
         // Removing the collider is from the skybox is enough,
         // but this *ENSURES* no one ever collides with it.

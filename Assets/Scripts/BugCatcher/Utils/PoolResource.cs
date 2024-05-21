@@ -9,7 +9,7 @@ namespace BugCatcher.Utils.ObjectPooling
     public class PoolResource
     : MonoBehaviour
     {
-        public Pool Pool       { get; private set; } = null;
+        public OptionRef<Pool> Pool       { get; private set; } = OptionRef<Pool>.None;
         public bool IsTemplate {
             get =>
 #if false
@@ -18,9 +18,8 @@ namespace BugCatcher.Utils.ObjectPooling
                 .Map( _ => Pool )    
                 // .Map( _ => { Pool.TryGetByInstance( gameObject, out var pool ); return pool; } )
 #else
-                Pool
-#endif
-                .IsTemplate( gameObject ); 
+                Pool.IsSomeAnd( p => p.IsTemplate( gameObject ) );
+#endif 
         }
 
         public bool IsInit     { get; private set; }  = false;
@@ -40,6 +39,7 @@ namespace BugCatcher.Utils.ObjectPooling
 
         void OnDisable()
         {
+            
             bool validPool  = Pool.IsValid( Pool ),
                  isInstance = !IsTemplate;
             if ( ReturnOnDisable 

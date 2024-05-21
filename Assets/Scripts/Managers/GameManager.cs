@@ -11,6 +11,7 @@ public class GameManager : MonoShared<GameManager>
 {
     [SerializeField] TMP_Text   _timeTmp, _scoreTmp;
     [SerializeField] Transform  _player;
+    [SerializeField] Transform  _lookAt;
     [SerializeField] Collider   _lurkZone;
     [SerializeField] Collider   _playerCollider;
 
@@ -19,6 +20,7 @@ public class GameManager : MonoShared<GameManager>
     char[]  _timeFmt = new char[ 5 ];
 
     public Transform player         { get => _player; }
+    public Transform lookAt         { get => _lookAt; }
     public Vector3   lurkPoint   { 
         get => BC_Random
             .InsideBounds( _lurkZone.bounds )

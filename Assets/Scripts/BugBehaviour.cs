@@ -8,6 +8,7 @@ using BugCatcher.Extensions;
 using System.Runtime.CompilerServices;
 using System;
 using OVR.OpenVR;
+using BugCatcher.Extensions.Functional;
 
 public class BugBehaviour : MonoBehaviour
 {
@@ -117,23 +118,35 @@ public class BugBehaviour : MonoBehaviour
 
         movementParams.Force( _bug.gameObject );
         var look    = gameObject.GetOrAddComponent<LookAtTarget>();
-        look.target = GameManager.Instance.player;
+        // look.target = GameManager.Instance.player;
+        look.target = GameManager.Instance.lookAt;
     }
 
     void FixedUpdate()
     {
+        if ( _rb.useGravity )
+            transform.position = transform.position.WithY( 0f );
+
         switch ( _state )
         {
             case BugState.Lurk:
                 if ( Mathf.Approximately( (_target - transform.position).magnitude, 0f ) )
-                    _target = GameManager.Instance.lurkPoint;
+                {
+                    var point = GameManager.Instance.lurkPoint;
+                    if ( _rb.useGravity )
+                        point.y = 0f;
+
+                    _target = point;
+                }
                 goto case BugState.Approach;
 
             case BugState.Attack:
             case BugState.Approach:
                 _rb.velocity = ( _target - transform.position ).normalized 
                              * ( speed * BASE_SPEED * Time.fixedDeltaTime );
-                // _rb.MovePosition( _target * ( Time.fixedDeltaTime * speed * BASE_SPEED ) );
+                if ( _rb.useGravity )
+                    _rb.velocity = _rb.velocity.WithY( 0f );
+                    // _rb.MovePosition( _target * ( Time.fixedDeltaTime * speed * BASE_SPEED ) );
                 break;
         }
     }
@@ -166,16 +179,21 @@ public class BugBehaviour : MonoBehaviour
 
     void OnDisable()
     {
-        switch ( _state )
-        {
-            case BugState.Captured:
-                Instantiate( _particlesCaptured, _bug.transform.position, Quaternion.Euler( 0, -90, -90 ) );
-                break;
+        bool captured = _state == BugState.Captured,
+             attack   = _state == BugState.Attack;
 
-            case BugState.Attack:
-                Instantiate( _particlesAttack, _bug.transform.position, Quaternion.Euler( 0, -90, -90 ) );
-                break;
-        }
+        if ( !captured && !attack )
+            return;
+
+        ParticleSystem particles = captured ? _particlesCaptured : _particlesAttack;
+        var p = Instantiate(
+            particles,
+            _bug.transform.position, 
+            Quaternion.Euler( 0, -90, -90 ) 
+        );
+
+        p.Play();
+        Destroy( p.gameObject, particles.main.duration * Time.timeScale );
     }
     #endregion
 

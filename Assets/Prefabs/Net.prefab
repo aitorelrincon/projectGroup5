@@ -180,9 +180,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isFocusRequired: 1
   InputAction:
-    id: 1
-    description: Select
-    axisConstraint: 2
+    id: 6
+    description: Grip Press
+    axisConstraint: 3
   MarkEventsAsUsed: 0
   OnInputActionStarted:
     m_PersistentCalls:
@@ -263,7 +263,7 @@ Transform:
   m_GameObject: {fileID: 6207592018127631453}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.7071068, z: -0.7071068, w: 0}
-  m_LocalPosition: {x: 0, y: 0.1511, z: 0}
+  m_LocalPosition: {x: 0, y: 0.1372, z: 0}
   m_LocalScale: {x: 0.2499999, y: 0.24999994, z: 0.24999994}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -376,11 +376,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a9349c8fdb18b3d498deaa5a00b87c26, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.0854
+      value: 0.0771
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a9349c8fdb18b3d498deaa5a00b87c26, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a9349c8fdb18b3d498deaa5a00b87c26, type: 3}
       propertyPath: m_LocalRotation.w

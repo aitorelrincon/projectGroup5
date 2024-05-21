@@ -1,4 +1,5 @@
 // #define ORIGINAL
+// #define MRTK_IMPORT_FIXED
 
 using System.Collections;
 using System.Collections.Generic;
@@ -8,12 +9,15 @@ using BugCatcher.Extensions;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 
-public class NetScaler : MonoBehaviour, INetScaler<NetScaler>, IMixedRealityInputHandler
+public class NetScaler : MonoBehaviour, INetScaler<NetScaler>
+#if MRTK_IMPORT_FIXED
+    , IMixedRealityInputHandler
+#endif
 {
     public Transform netRing;
     public Transform netHandle;
 
-    private float[] heightScales = new float[] { 1.0f, 1.5f, 2.0f };
+    private float[] heightScales = new float[] { 1.0f, 1.75f, 3.0f };
     private int   currentIndex = 0;
 #if ORIGINAL
     private float baseHeight = 0.02f; // Adjust this to set the initial height of the handle
@@ -36,14 +40,15 @@ public class NetScaler : MonoBehaviour, INetScaler<NetScaler>, IMixedRealityInpu
 #if UNITY_EDITOR
     void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.UpArrow))
-        //{
-        //    NextScale();
-        //}
-        //if (Input.GetKeyDown(KeyCode.DownArrow))
-        //{
-        //    PreviousScale();
-        //}
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            NextScale();
+        }
+        
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            PreviousScale();
+        }
     }
 #endif
 
@@ -82,6 +87,7 @@ public class NetScaler : MonoBehaviour, INetScaler<NetScaler>, IMixedRealityInpu
 #endif
     }
 
+#if MRTK_IMPORT_FIXED
     public void OnInputUp(InputEventData eventData)
     {
         if (eventData.MixedRealityInputAction.Description == "Trigger" && eventData.Handedness == Handedness.Right)
@@ -99,4 +105,5 @@ public class NetScaler : MonoBehaviour, INetScaler<NetScaler>, IMixedRealityInpu
     {
         throw new System.NotImplementedException();
     }
+#endif
 }
