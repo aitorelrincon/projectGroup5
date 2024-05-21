@@ -1,7 +1,10 @@
+// #define ORIGINAL
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using BugCatcher.Interfaces;
+using BugCatcher.Extensions;
 
 public class NetScaler : MonoBehaviour, INetScaler<NetScaler>
 {
@@ -9,15 +12,26 @@ public class NetScaler : MonoBehaviour, INetScaler<NetScaler>
     public Transform netHandle;
 
     private float[] heightScales = new float[] { 1.0f, 1.5f, 2.0f };
-    private int currentIndex = 0;
+    private int   currentIndex = 0;
+#if ORIGINAL
     private float baseHeight = 0.02f; // Adjust this to set the initial height of the handle
+    private float baseY;
+#else
+    Vector2 baseHandle;
+    float   baseRingY;
+#endif
 
     void Start()
     {
+        baseHandle[0]   = netHandle.localScale.y;
+        baseHandle[1]   = netHandle.localPosition.y;
+        baseRingY       = netRing.localPosition.y;
+
         // Initialize the net to the default scale
         SetScale(currentIndex);
     }
 
+#if UNITY_EDITOR
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.UpArrow))
@@ -29,6 +43,7 @@ public class NetScaler : MonoBehaviour, INetScaler<NetScaler>
             PreviousScale();
         }
     }
+#endif
 
     public void NextScale()
     {
@@ -50,12 +65,18 @@ public class NetScaler : MonoBehaviour, INetScaler<NetScaler>
             return;
         }
 
-        float scaleY = heightScales[i] * baseHeight;
 
+#if ORIGINAL
+        float scaleY = heightScales[i] * baseHandle[0];
         // Set the new scale for the net handle, keeping x and z scale constant
         netHandle.localScale = new Vector3(netHandle.localScale.x, scaleY, netHandle.localScale.z);
 
         // Here you can adjust the net ring position to be at the top of the handle
         netRing.localPosition = new Vector3(netRing.localPosition.x, netHandle.localScale.y * 5f, netRing.localPosition.z);
+#else
+        netHandle.localScale    = netHandle.localScale.WithZ( heightScales[i] );
+        netHandle.localPosition = netHandle.localPosition.WithY( baseHandle[1] * heightScales[i]  );
+        netRing.localPosition   = netRing.localPosition.WithY( baseRingY * heightScales[i] );
+#endif
     }
 }

@@ -46,6 +46,91 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _kind: 0
+  _particlesCaptured: {fileID: 4073641047721943638}
+  _particlesAttack: {fileID: 8026202343623263785, guid: a2296300515ec90419a2118699fbc51d, type: 3}
+--- !u!1001 &762175096052219977
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3145871350248098240}
+    m_Modifications:
+    - target: {fileID: 2327509226914330740, guid: 34c19a614514889448386ad2b08ce45a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2327509226914330740, guid: 34c19a614514889448386ad2b08ce45a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2327509226914330740, guid: 34c19a614514889448386ad2b08ce45a, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2327509226914330740, guid: 34c19a614514889448386ad2b08ce45a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2327509226914330740, guid: 34c19a614514889448386ad2b08ce45a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2327509226914330740, guid: 34c19a614514889448386ad2b08ce45a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2327509226914330740, guid: 34c19a614514889448386ad2b08ce45a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 2327509226914330740, guid: 34c19a614514889448386ad2b08ce45a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 2327509226914330740, guid: 34c19a614514889448386ad2b08ce45a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2327509226914330740, guid: 34c19a614514889448386ad2b08ce45a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2327509226914330740, guid: 34c19a614514889448386ad2b08ce45a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2327509226914330740, guid: 34c19a614514889448386ad2b08ce45a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2327509226914330740, guid: 34c19a614514889448386ad2b08ce45a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2327509226914330740, guid: 34c19a614514889448386ad2b08ce45a, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4891755741871597326, guid: 34c19a614514889448386ad2b08ce45a, type: 3}
+      propertyPath: m_Name
+      value: BugWorm
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 34c19a614514889448386ad2b08ce45a, type: 3}
+--- !u!4 &3089244465684789309 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2327509226914330740, guid: 34c19a614514889448386ad2b08ce45a, type: 3}
+  m_PrefabInstance: {fileID: 762175096052219977}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &4073641047721943638 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 3610673886812512799, guid: 34c19a614514889448386ad2b08ce45a, type: 3}
+  m_PrefabInstance: {fileID: 762175096052219977}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3433915228739210936
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -220,7 +305,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 292688791134783352, guid: 12b7bc38d034ac9478fb458d6b073074, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3089244465684789309}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1100011129182330306, guid: 12b7bc38d034ac9478fb458d6b073074, type: 3}
       insertIndex: -1

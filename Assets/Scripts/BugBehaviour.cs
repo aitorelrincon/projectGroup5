@@ -67,6 +67,11 @@ public class BugBehaviour : MonoBehaviour
     #region Bug config
     [Header("Bug config")] 
     [SerializeField] BugKind _kind;
+    [SerializeField] ParticleSystem 
+                        _particlesCaptured,
+                        _particlesAttack;
+
+    [Header("Particles")]
     #endregion
 
     #region Private variables
@@ -155,6 +160,20 @@ public class BugBehaviour : MonoBehaviour
                 GameManager.Instance.AddScore( value );
                 _state = BugState.Captured;
                 gameObject.SetActive( false );
+                break;
+        }
+    }
+
+    void OnDisable()
+    {
+        switch ( _state )
+        {
+            case BugState.Captured:
+                Instantiate( _particlesCaptured, _bug.transform.position, Quaternion.Euler( 0, -90, -90 ) );
+                break;
+
+            case BugState.Attack:
+                Instantiate( _particlesAttack, _bug.transform.position, Quaternion.Euler( 0, -90, -90 ) );
                 break;
         }
     }

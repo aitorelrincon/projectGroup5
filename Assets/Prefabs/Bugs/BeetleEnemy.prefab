@@ -46,6 +46,91 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _kind: 3
+  _particlesCaptured: {fileID: 4448447029899450581}
+  _particlesAttack: {fileID: 8026202343623263785, guid: a2296300515ec90419a2118699fbc51d, type: 3}
+--- !u!1001 &7293871003918605660
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 8994289789897135999}
+    m_Modifications:
+    - target: {fileID: 7814134466611519198, guid: 2e5b87da9140c774dabacd7bf4cf7445, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7814134466611519198, guid: 2e5b87da9140c774dabacd7bf4cf7445, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7814134466611519198, guid: 2e5b87da9140c774dabacd7bf4cf7445, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7814134466611519198, guid: 2e5b87da9140c774dabacd7bf4cf7445, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7814134466611519198, guid: 2e5b87da9140c774dabacd7bf4cf7445, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7814134466611519198, guid: 2e5b87da9140c774dabacd7bf4cf7445, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7814134466611519198, guid: 2e5b87da9140c774dabacd7bf4cf7445, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7814134466611519198, guid: 2e5b87da9140c774dabacd7bf4cf7445, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7814134466611519198, guid: 2e5b87da9140c774dabacd7bf4cf7445, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7814134466611519198, guid: 2e5b87da9140c774dabacd7bf4cf7445, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7814134466611519198, guid: 2e5b87da9140c774dabacd7bf4cf7445, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7814134466611519198, guid: 2e5b87da9140c774dabacd7bf4cf7445, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 7814134466611519198, guid: 2e5b87da9140c774dabacd7bf4cf7445, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 7814134466611519198, guid: 2e5b87da9140c774dabacd7bf4cf7445, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9167731104228364135, guid: 2e5b87da9140c774dabacd7bf4cf7445, type: 3}
+      propertyPath: m_Name
+      value: BugBeetle
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2e5b87da9140c774dabacd7bf4cf7445, type: 3}
+--- !u!4 &668899915666228098 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7814134466611519198, guid: 2e5b87da9140c774dabacd7bf4cf7445, type: 3}
+  m_PrefabInstance: {fileID: 7293871003918605660}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &4448447029899450581 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 6378511085805979017, guid: 2e5b87da9140c774dabacd7bf4cf7445, type: 3}
+  m_PrefabInstance: {fileID: 7293871003918605660}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8236245888045873947
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -116,7 +201,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 1053603820149615716, guid: 6223a8430e9e042498b1f1b8b2be990d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 668899915666228098}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 420233047795005150, guid: 6223a8430e9e042498b1f1b8b2be990d, type: 3}
       insertIndex: -1
