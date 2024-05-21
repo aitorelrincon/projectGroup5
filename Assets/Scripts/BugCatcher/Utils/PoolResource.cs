@@ -9,13 +9,17 @@ namespace BugCatcher.Utils.ObjectPooling
     public class PoolResource
     : MonoBehaviour
     {
-        public Pool Pool       { get; private set; }
+        public Pool Pool       { get; private set; } = null;
         public bool IsTemplate {
             get =>
+#if false
                 ( Pool is null )
                 .Tee( ( b ) => Debug.Log( "[PoolResource] - Pool is null?: " + b ) )
                 .Map( _ => Pool )    
                 // .Map( _ => { Pool.TryGetByInstance( gameObject, out var pool ); return pool; } )
+#else
+                Pool
+#endif
                 .IsTemplate( gameObject ); 
         }
 
@@ -43,13 +47,13 @@ namespace BugCatcher.Utils.ObjectPooling
             &&   isInstance ) 
                 Pool.Return( gameObject );
 
-            Debug.LogFormat( 
-                "[PoolResource] - OnDisable called for {0} ({1}, {2}, {3})", 
-                gameObject.name,
-                ReturnOnDisable,
-                validPool,
-                isInstance
-            );
+            // Debug.LogFormat( 
+            //     "[PoolResource] - OnDisable called for {0} ({1}, {2}, {3})", 
+            //     gameObject.name,
+            //     ReturnOnDisable,
+            //     validPool,
+            //     isInstance
+            // );
         }
 
         void OnDestroy()
@@ -67,10 +71,11 @@ namespace BugCatcher.Utils.ObjectPooling
 
 #pragma warning disable IDE0051 // Remove unused private members
 #pragma warning disable IDE1006 // Naming style
-        void ___SetPool( Pool pool )
+        public void ___SetPool( Pool pool )
         {
-            Debug.Log( $"[PoolResource] - ___SetPool called for {gameObject.name} - pool: { pool is not null }" );
-            Pool = pool;
+            // Debug.Log( $"[PoolResource] - ___SetPool called for {gameObject.name} - pool: { pool is not null }" );
+            if ( Pool is null )
+                Pool = pool;
         }
 
         [Obsolete]

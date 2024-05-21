@@ -95,9 +95,9 @@ public class BugBehaviour : MonoBehaviour
     void Start()
     {
         Assert.AreEqual( transform.childCount, 1 );
-        Debug.Log( "{" + string.Join(", ", _Speed ) + "}" );
-        Debug.Log( "{" + string.Join(", ", _Value ) + "}" );
-        Debug.Log( "{" + string.Join(", ", _MovementParams ) + "}" );
+        // Debug.Log( "{" + string.Join(", ", _Speed ) + "}" );
+        // Debug.Log( "{" + string.Join(", ", _Value ) + "}" );
+        // Debug.Log( "{" + string.Join(", ", _MovementParams ) + "}" );
 
         _bug    = transform.GetChild( 0 );
         _rb     = gameObject.GetOrAddComponent<Rigidbody>();
@@ -162,7 +162,7 @@ public class BugBehaviour : MonoBehaviour
 
     void SetState( BugState state, Vector3? target )
     {
-        Debug.Log( state );
+        // Debug.Log( state );
         _state = state;
         if ( target.HasValue )
             _target = target.Value;

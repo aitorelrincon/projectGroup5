@@ -91,9 +91,9 @@ public class MassPlacePseudoTrees : MonoBehaviour
         // Select and instantiate each GameObject
         for ( int i = 0; i < spawnCount; ++i )
         {
-            UnityEngine.Debug.Log( "Hola?" );
-            UnityEngine.Debug.Log( i );
-            UnityEngine.Debug.Log( spawnCount );
+            // UnityEngine.Debug.Log( "Hola?" );
+            // UnityEngine.Debug.Log( i );
+            // UnityEngine.Debug.Log( spawnCount );
             float slice = UnityEngine.Random.value * total;
             float sum   = 0.0f;
             GameObject prefab = _prefabs[ 0 ].prefab;

@@ -35,13 +35,15 @@ namespace BugCatcher.Utils.ObjectPooling
         #endregion
 
         #region Instance variables
-        HashStack<PoolResource> _available;
+        // HashStack<PoolResource> _available;
+        Queue<PoolResource>     _available;
         List<GameObject>        _instances;
         (GameObject gameObject, Quaternion rotation, Vector3 localScale)          
             _prefab;
         
         PoolResource            _template;
-        Transform               _pooledParent = null;
+        Transform               _pooledParent  = null;
+        PoolParenting           _poolParenting = null;
         #endregion
 
         #region Properties
@@ -89,7 +91,15 @@ namespace BugCatcher.Utils.ObjectPooling
                 
                 return r;
             });
-            
+
+            if ( _poolParenting is null )
+            {
+                _poolParenting = new GameObject( $"PoolReparenting:{ _template.name }" )
+                               . AddComponent<PoolParenting>();
+
+                UnityEngine.Object.DontDestroyOnLoad( _poolParenting );
+            }
+
             // There are no friend classes, and working with multiple
             // assemblies gets REALLY messy.
             // Next .Invoke basically does this:
@@ -115,8 +125,10 @@ namespace BugCatcher.Utils.ObjectPooling
             //  Debug.LogError( "[Pools] - PoolsTemplateSetup must only have one child at a time" );
             // _templateSetup.BroadcastMessage( "___SetPool", { this } );
 
-            _template.SendMessage( "___SetPool", this );
+            // _template.SendMessage( "___SetPool", this );
+            _template.___SetPool( this );
             // _template.SendMessage( "___MakeTemplate" );
+
 #endif
             _template.gameObject.SetActive( false );
             _template.transform.parent = _prefabsParent;
@@ -129,7 +141,7 @@ namespace BugCatcher.Utils.ObjectPooling
             : this( prefab, capacity )
         {
             _pooledParent = pooledParent;
-            Debug.Log( pooledParent.gameObject.name );
+            // Debug.Log( pooledParent.gameObject.name );
         }
 
         /// <summary>
@@ -212,7 +224,7 @@ namespace BugCatcher.Utils.ObjectPooling
 
             var r = instance.GetComponent<PoolResource>();
             pool.ResetResource( r );
-            pool._available.Push( r );
+            pool._available.Enqueue( r );
             return true;
         }
 
@@ -294,7 +306,7 @@ namespace BugCatcher.Utils.ObjectPooling
         public void Fill( int count )
         {
             for ( int i = 0; i < count; i++ )
-                _available.Push( CreateInstance( false ) );
+                _available.Enqueue( CreateInstance( false ) );
         }
 
         /// <summary>
@@ -317,7 +329,7 @@ namespace BugCatcher.Utils.ObjectPooling
             // Objects can only be removed from Stacks by popping.
             // Thus, we must make sure that each and every object we're
             // popping hasn't been destroyed yet.
-            while ( ( instance = _available.Pop() ) == null && _available.Count > 0 ) { }
+            while ( ( instance = _available.Dequeue() ) == null && _available.Count > 0 ) { }
 
             // No available instances, create a new one
             if ( instance == null )
@@ -451,7 +463,7 @@ namespace BugCatcher.Utils.ObjectPooling
 
             var r = instance.GetComponent<PoolResource>();
             ResetResource( r );
-            _available.Push( r );
+            _available.Enqueue( r );
         }
 
         /// <summary>
@@ -465,7 +477,8 @@ namespace BugCatcher.Utils.ObjectPooling
                 return;
 
             var p = instance.GetComponent<PoolResource>();
-            p.SendMessage( "___SetPool", Sentinel ); // Avoid calling Remove recursively OnDestroy
+            p.___SetPool( Sentinel );
+            // p.SendMessage( "___SetPool", Sentinel ); // Avoid calling Remove recursively OnDestroy
             ResetResource( p );
             UnityEngine.Object.Destroy( p );
             
@@ -507,11 +520,13 @@ namespace BugCatcher.Utils.ObjectPooling
         }
 
         public bool IsTemplate( GameObject gameObject ) =>
-            true.Tee( ( v ) => {
-                    Debug.Log( gameObject );
-                    Debug.Log( _template.gameObject );
-                } )
+            true
+                // .Tee( ( v ) => {
+                //     Debug.Log( gameObject );
+                //     Debug.Log( _template.gameObject );
+                // } )
                 .Map( (v) => gameObject == _template.gameObject );
+        
         public bool IsTemplate( PoolResource resource ) => resource   == _template;
         #endregion
 
@@ -524,7 +539,8 @@ namespace BugCatcher.Utils.ObjectPooling
         PoolResource CreateInstance( bool active = true )
         {
             var instance = UnityEngine.Object.Instantiate( _template );
-
+            
+            instance.___SetPool( this );
             instance.gameObject.SetActive( active );
             instance.transform.parent = _pooledParent;
             _instancesDict.Add( instance.gameObject, this );
@@ -540,12 +556,13 @@ namespace BugCatcher.Utils.ObjectPooling
         void ResetResource( PoolResource resource )
         {
             resource.OnReturn();
-            if ( resource.gameObject.activeSelf )
-                resource.gameObject.SetActive( false );
+            // if ( resource.gameObject.activeSelf )
+            //     resource.gameObject.SetActive( false );
 
             // TODO: Maybe we could have a default parent for Pooled objects...
             // 17/05/2024 -> Done
-            resource.transform.parent     = _pooledParent;
+            // resource.transform.parent     = _pooledParent;
+            _poolParenting.Enqueue( resource.gameObject, _pooledParent );
             resource.transform.rotation   = _prefab.rotation;
             resource.transform.localScale = _prefab.localScale;
         }
