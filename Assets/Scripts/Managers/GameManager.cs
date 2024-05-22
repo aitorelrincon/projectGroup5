@@ -141,6 +141,10 @@ public class GameManager : MonoShared<GameManager>
             foreach ( var k in BugBehaviour.KindArray )
                 if ( !_spawner.TrySetProportion( (int)k, currentWave[k] ) )
                     Debug.LogError( "[GameManager] - Failed to update MultiSpawner proportions, index out of range" );
+
+            // Avoids starting Wave3 again
+            if ( _waveIdx <= 3 )
+                AudioManager.Instance.PlayMusic( "Wave" + Mathf.Max( _waveIdx, 3 ) );
         }
     }
 
