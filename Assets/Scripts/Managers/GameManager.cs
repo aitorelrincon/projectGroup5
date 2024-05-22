@@ -138,6 +138,9 @@ public class GameManager : MonoShared<GameManager>
         {
             _waveCaught = 0;
             ++_waveIdx;
+            foreach ( var k in BugBehaviour.KindArray )
+                if ( !_spawner.TrySetProportion( (int)k, currentWave[k] ) )
+                    Debug.LogError( "[GameManager] - Failed to update MultiSpawner proportions, index out of range" );
         }
     }
 

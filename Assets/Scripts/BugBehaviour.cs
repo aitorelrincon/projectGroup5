@@ -15,6 +15,7 @@ public class BugBehaviour : MonoBehaviour
     #region Constants
     public const float BASE_SPEED       = 100f;
     public const float LURK_WAIT_SECS   =  10f;
+    public static readonly BugKind[] KindArray = (BugKind[])Enum.GetValues( typeof(BugKind) );
     #endregion
 
     #region Nested types

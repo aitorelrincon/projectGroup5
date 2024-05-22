@@ -228,6 +228,15 @@ public class MultiSpawner : MonoBehaviour
 
     public void SetSpawnParent( Transform parent ) => this.spawnedParent = parent;
 
+    public bool TrySetProportion( int i, float proportion )
+    {
+        if ( i <= 0 || i >= _pools.Length )
+            return false;
+
+        prefabsConfig[i].proportion = Mathf.Clamp( proportion, 0f, 1f );
+        return true;
+    }
+
     public bool TrySetProportion( Pool p, float proportion )
     {
         int i = Array.IndexOf( _pools, p );
