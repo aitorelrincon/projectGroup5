@@ -58,7 +58,7 @@ public class GameManager : MonoShared<GameManager>
     public WaveParams[] _waveParams = {
         new( 10, 1.00f, 1.00f, 0.50f, 0.00f, 0.00f ),
         new( 12, 0.25f, 0.75f, 1.00f, 0.25f, 0.00f ),
-        new( 25, 0.25f, 0.50f, 1.00f, 1.00f, 0.00f ),
+        new( 25, 0.25f, 0.50f, 1.00f, 1.00f, 0.05f ),
     };
     #endregion
 

@@ -422,6 +422,25 @@ MonoBehaviour:
   _lookAt: {fileID: 2094975320}
   _lurkZone: {fileID: 680369459}
   _playerCollider: {fileID: 963194232}
+  _waveParams:
+  - count: 10
+    _worm: 1
+    _grasshopper: 1
+    _butterfly: 0.5
+    _beetle: 0
+    _bee: 0
+  - count: 12
+    _worm: 0.25
+    _grasshopper: 0.75
+    _butterfly: 1
+    _beetle: 0.25
+    _bee: 0
+  - count: 25
+    _worm: 0.25
+    _grasshopper: 0.5
+    _butterfly: 1
+    _beetle: 1
+    _bee: 0.05
 --- !u!114 &680369457
 MonoBehaviour:
   m_ObjectHideFlags: 0
