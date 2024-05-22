@@ -6,13 +6,13 @@ using System.Runtime.InteropServices;
 
 namespace BugCatcher.Utils
 {
-    public class NoneOptionException : Exception
+    public class NullOptionException : Exception
     {
-        public NoneOptionException() { }
+        public NullOptionException() { }
 
-        public NoneOptionException(string message) : base(message) { }
+        public NullOptionException(string message) : base(message) { }
 
-        public NoneOptionException(string message, Exception inner) : base(message, inner) { }
+        public NullOptionException(string message, Exception inner) : base(message, inner) { }
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -29,17 +29,17 @@ namespace BugCatcher.Utils
             this.value = v;
         }
 
-        public static OptionRef<T> Some(T v) => new(v);
+        public static OptionRef<T> Create(T v) => new(v);
         public static OptionRef<T> None { get => new OptionRef<T> (); }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsSome() => value != null;
+        public bool IsSome() => value is not null;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsSomeAnd(Func<T, bool> f) => IsSome() && f(value);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsNone() => value == null;
+        public bool IsNone() => value is null;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsNoneAnd(Func<T, bool> f) => IsNone() && f(value);
@@ -48,22 +48,19 @@ namespace BugCatcher.Utils
         public T Expect(string message) 
             => IsSome() 
                 ? value 
-                : throw new NoneOptionException(message);
+                : throw new NullOptionException(message);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T Unwrap(string message)
             => IsSome()
                 ? value
-                : throw new NoneOptionException();
+                : throw new NullOptionException();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T UnwrapOr(T d) => IsSome() ? value : d;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T UnwrapOrElse(Func<T> f) => IsSome() ? value : f();
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public T UnwrapOrDefault() => UnwrapOr(default);
 
 #if OPT_UNSAFE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -77,15 +74,8 @@ namespace BugCatcher.Utils
         public OptionRef<U> Select<U>(Func<T, U> f)
             where U : class
             => IsSome() 
-                ? OptionRef<U>.Some(f(value))
+                ? OptionRef<U>.Create(f(value))
                 : OptionRef<U>.None;
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public OptionRef<T> Tee(Action<T> a)
-        {
-            a(value); 
-            return this;
-        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public U SelectOr<U>(U d, Func<T, U> f)

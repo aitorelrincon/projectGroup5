@@ -1,5 +1,6 @@
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.UI;
+using BugCatcher.Extensions.Functional;
 
 /// <summary>
 /// Automatically makes the Interactable quit the game.
@@ -8,7 +9,7 @@ using Microsoft.MixedReality.Toolkit.UI;
 public class MRTK_ExitButton : MonoBehaviour
 {
     Interactable _interactable;
-    void OnAwake()   => _interactable = GetComponent<Interactable>();
+    void Awake()   => _interactable = GetComponent<Interactable>().Tee( (i) => Debug.Log(i) );
     void OnEnable()  => _interactable.OnClick.AddListener( SCManager.Instance.Exit );
     void OnDisable() => _interactable.OnClick.RemoveListener( SCManager.Instance.Exit );
 }

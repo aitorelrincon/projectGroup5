@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18285483, g: 0.47402143, b: 0.68582696, a: 1}
+  m_IndirectSpecularColor: {r: 0.18107848, g: 0.47406614, b: 0.686389, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -414,9 +414,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1164638889}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 3
+  m_MaxValue: 100
   m_WholeNumbers: 1
-  m_Value: 3
+  m_Value: 100
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -745,6 +745,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _timeTmp: {fileID: 0}
   _scoreTmp: {fileID: 0}
+  _healthBar: {fileID: 0}
   _player: {fileID: 963194228}
   _lookAt: {fileID: 2094975320}
   _lurkZone: {fileID: 680369459}

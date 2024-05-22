@@ -7,8 +7,12 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(Interactable))]
 public class MRTK_LoadSceneButton : MonoBehaviour
 {
+    Interactable _interactable;
     [SerializeField] public string sceneName;
-  
-    public void LoadScene(string sceneName) { SceneManager.LoadScene(sceneName); }
+    
+    void Awake()     => _interactable = GetComponent<Interactable>();
+    void OnEnable()  => _interactable.OnClick.AddListener( LoadScene );
+    void OnDisable() => _interactable.OnClick.RemoveListener( LoadScene );
+    public void LoadScene() { SceneManager.LoadScene(sceneName); }
     public string currentScene { get { return SceneManager.GetActiveScene().name; } }
 }

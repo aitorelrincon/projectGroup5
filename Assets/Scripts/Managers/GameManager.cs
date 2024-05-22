@@ -1,12 +1,12 @@
 // #define TEXT_IMPLEMENTED
 
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 using BugCatcher.Utils;
 using BugCatcher.Extensions;
 using BugCatcher.Extensions.Functional;
-using Unity.VisualScripting.YamlDotNet.Core.Tokens;
 
 public class GameManager : MonoShared<GameManager>
 {
@@ -51,6 +51,7 @@ public class GameManager : MonoShared<GameManager>
 
     #region GameManager config
     [SerializeField] TMP_Text   _timeTmp, _scoreTmp;
+    [SerializeField] Slider     _healthBar;
     [SerializeField] Transform  _player;
     [SerializeField] Transform  _lookAt;
     [SerializeField] Collider   _lurkZone;
@@ -63,6 +64,7 @@ public class GameManager : MonoShared<GameManager>
     #endregion
 
     #region Private variables
+    float           _health = 100f;
     uint            _currentScore   = 0;
     
     Timer           _timer;
@@ -76,6 +78,8 @@ public class GameManager : MonoShared<GameManager>
 
     #region Properties
     WaveParams currentWave { get => _waveParams[Mathf.Min( _waveIdx, _waveParams.Length - 1 )]; }
+    public float health { get => _health; set => _health = Mathf.Clamp( value, 0, 100 ).Tee( h => _healthBar.value = h ); }
+    public bool onGoing { get => _health > 0f && _timer.Secs > 0f; }
     #endregion
 
     public Transform player         { get => _player; }
@@ -133,6 +137,7 @@ public class GameManager : MonoShared<GameManager>
         _timer.TryFormatMinutes( _timeFmt );
         _timeTmp.text = _timeFmt.ToString();
 #endif
+        if ( !onGoing ) return;
 
         if ( currentWave.count <= _waveCaught )
         {

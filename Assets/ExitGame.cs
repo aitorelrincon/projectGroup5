@@ -7,6 +7,7 @@ public class ExitGame : MonoBehaviour
     {
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
+        Debug.LogWarning( $"[ExitGame] - Called from {gameObject.name}" );
 #else
         // If running in the build
         Application.Quit();
