@@ -74,6 +74,7 @@ public class MultiSpawner : MonoBehaviour
 
     #region Properties
     private string HeaderStr =>  $"[MultiSpawner(name: {gameObject.name}, id: {GetInstanceID()})] - ";
+    public int spawnedCount { get => spawnedParent.childCount; }
     #endregion
 
     void Start()

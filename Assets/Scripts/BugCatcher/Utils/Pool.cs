@@ -126,11 +126,12 @@ namespace BugCatcher.Utils.ObjectPooling
             // _templateSetup.BroadcastMessage( "___SetPool", { this } );
 
             // _template.SendMessage( "___SetPool", this );
+            _template.gameObject.SetActive( false ); // We need to deactivate the object before setting 
+                                                     // the pool or else OnDisable will screw things up
             _template.___SetPool( this );
             // _template.SendMessage( "___MakeTemplate" );
 
 #endif
-            _template.gameObject.SetActive( false );
             _template.transform.parent = _prefabsParent;
             _available = new( capacity );
             _instances = new( capacity );
@@ -458,7 +459,7 @@ namespace BugCatcher.Utils.ObjectPooling
         /// <param name="instance">Instance to return</param>
         public void Return( GameObject instance )
         {
-            if ( !_instances.Contains( instance ) )
+            if ( instance is null || !_instances.Contains( instance ) )
                 return;
 
             var r = instance.GetComponent<PoolResource>();
@@ -519,14 +520,8 @@ namespace BugCatcher.Utils.ObjectPooling
             Debug.Log( $"[Pool] - Pool for {name} has been cleared" );
         }
 
-        public bool IsTemplate( GameObject gameObject ) =>
-            true
-                // .Tee( ( v ) => {
-                //     Debug.Log( gameObject );
-                //     Debug.Log( _template.gameObject );
-                // } )
-                .Map( (v) => gameObject == _template.gameObject );
-        
+        public bool IsTemplate( GameObject gameObject )
+            => ReferenceEquals( gameObject, _template );
         public bool IsTemplate( PoolResource resource ) => resource   == _template;
         #endregion
 

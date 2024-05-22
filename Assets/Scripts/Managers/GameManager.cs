@@ -6,18 +6,77 @@ using TMPro;
 using BugCatcher.Utils;
 using BugCatcher.Extensions;
 using BugCatcher.Extensions.Functional;
+using Unity.VisualScripting.YamlDotNet.Core.Tokens;
 
 public class GameManager : MonoShared<GameManager>
 {
+    #region Nested types
+    [System.Serializable]
+    public struct WaveParams
+    {
+        [Min( 0 )] public int count;
+        [Range( 0, 1 )] float _worm;
+        [Range( 0, 1 )] float _grasshopper;
+        [Range( 0, 1 )] float _butterfly;
+        [Range( 0, 1 )] float _beetle;
+        [Range( 0, 1 )] float _bee;
+
+        public float worm { get => _worm; set => _worm = Mathf.Clamp01( value ); }
+        public float grasshopper { get => _grasshopper; set => _grasshopper = Mathf.Clamp01( value ); }
+        public float butterfly { get => _butterfly; set => _butterfly = Mathf.Clamp01( value ); }
+        public float beetle { get => _beetle; set => _beetle = Mathf.Clamp01( value ); }
+        public float bee { get => _bee; set => _bee = Mathf.Clamp01( value ); }
+
+        public float this[BugBehaviour.BugKind kind] => kind switch
+        {
+            BugBehaviour.BugKind.Worm => worm,
+            BugBehaviour.BugKind.Grasshopper => grasshopper,
+            BugBehaviour.BugKind.Butterfly => butterfly,
+            BugBehaviour.BugKind.Beetle => beetle,
+            BugBehaviour.BugKind.Bee => bee,
+            _ => throw new System.NotImplementedException()
+        };
+
+        public WaveParams( int c, float w, float g, float bf, float bt, float b )
+        {
+            count = c;
+            _worm = Mathf.Clamp01( w );
+            _grasshopper = Mathf.Clamp01( g );
+            _butterfly = Mathf.Clamp01( bf );
+            _beetle = Mathf.Clamp01( bt );
+            _bee = Mathf.Clamp01( b );
+        }
+    }
+    #endregion
+
+    #region GameManager config
     [SerializeField] TMP_Text   _timeTmp, _scoreTmp;
     [SerializeField] Transform  _player;
     [SerializeField] Transform  _lookAt;
     [SerializeField] Collider   _lurkZone;
     [SerializeField] Collider   _playerCollider;
+    public WaveParams[] _waveParams = {
+        new( 10, 1.00f, 1.00f, 0.50f, 0.00f, 0.00f ),
+        new( 12, 0.25f, 0.75f, 1.00f, 0.25f, 0.00f ),
+        new( 25, 0.25f, 0.50f, 1.00f, 1.00f, 0.00f ),
+    };
+    #endregion
 
-    uint    _currentScore = 0;
-    Timer   _timer;
-    char[]  _timeFmt = new char[ 5 ];
+    #region Private variables
+    uint            _currentScore   = 0;
+    
+    Timer           _timer;
+    char[] _timeFmt = new char[ 5 ];
+    
+    MultiSpawner    _spawner;
+    int             _totalCaught;
+    int             _waveIdx;
+    int             _waveCaught;
+    #endregion
+
+    #region Properties
+    WaveParams currentWave { get => _waveParams[Mathf.Min( _waveIdx, _waveParams.Length - 1 )]; }
+    #endregion
 
     public Transform player         { get => _player; }
     public Transform lookAt         { get => _lookAt; }
@@ -49,6 +108,9 @@ public class GameManager : MonoShared<GameManager>
         _timer.CountMode = Timer.Count.Down;
         _timer.Secs      = 120; // Two minutes
 
+        _spawner         = GetComponent<MultiSpawner>();
+        _spawner.proceedSpawnCheck = () => _spawner.spawnedCount + _waveCaught < currentWave.count;
+
 #if false
         if (Camera.main != null)
         {
@@ -71,6 +133,12 @@ public class GameManager : MonoShared<GameManager>
         _timer.TryFormatMinutes( _timeFmt );
         _timeTmp.text = _timeFmt.ToString();
 #endif
+
+        if ( currentWave.count <= _waveCaught )
+        {
+            _waveCaught = 0;
+            ++_waveIdx;
+        }
     }
 
     public void AddScore(uint scoreToAdd)

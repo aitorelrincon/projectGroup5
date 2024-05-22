@@ -9,17 +9,15 @@ namespace BugCatcher.Utils.ObjectPooling
     public class PoolResource
     : MonoBehaviour
     {
-        public OptionRef<Pool> Pool       { get; private set; } = OptionRef<Pool>.None;
+        public Pool Pool       { get; private set; }
         public bool IsTemplate {
-            get =>
-#if false
-                ( Pool is null )
-                .Tee( ( b ) => Debug.Log( "[PoolResource] - Pool is null?: " + b ) )
-                .Map( _ => Pool )    
-                // .Map( _ => { Pool.TryGetByInstance( gameObject, out var pool ); return pool; } )
-#else
-                Pool.IsSomeAnd( p => p.IsTemplate( gameObject ) );
-#endif 
+            get {
+                // For some reason, && isn't shortcircuiting
+                if ( !Pool.IsValid( Pool ) )
+                    return false;
+
+                return Pool.IsTemplate( gameObject );
+            }
         }
 
         public bool IsInit     { get; private set; }  = false;
@@ -39,12 +37,9 @@ namespace BugCatcher.Utils.ObjectPooling
 
         void OnDisable()
         {
-            
-            bool validPool  = Pool.IsValid( Pool ),
-                 isInstance = !IsTemplate;
             if ( ReturnOnDisable 
-            &&   validPool 
-            &&   isInstance ) 
+            &&   Pool.IsValid( this.Pool ) 
+            &&   !Pool.IsTemplate( gameObject ) ) 
                 Pool.Return( gameObject );
 
             // Debug.LogFormat( 
