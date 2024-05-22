@@ -15,11 +15,11 @@ public class GameManager : MonoShared<GameManager>
     public struct WaveParams
     {
         [Min( 0 )] public int count;
-        [Range( 0, 1 )] float _worm;
-        [Range( 0, 1 )] float _grasshopper;
-        [Range( 0, 1 )] float _butterfly;
-        [Range( 0, 1 )] float _beetle;
-        [Range( 0, 1 )] float _bee;
+        [SerializeField, Range( 0, 1 )] float _worm;
+        [SerializeField, Range( 0, 1 )] float _grasshopper;
+        [SerializeField, Range( 0, 1 )] float _butterfly;
+        [SerializeField, Range( 0, 1 )] float _beetle;
+        [SerializeField, Range( 0, 1 )] float _bee;
 
         public float worm { get => _worm; set => _worm = Mathf.Clamp01( value ); }
         public float grasshopper { get => _grasshopper; set => _grasshopper = Mathf.Clamp01( value ); }
