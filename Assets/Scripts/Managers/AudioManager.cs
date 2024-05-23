@@ -10,6 +10,7 @@ using UnityEngine;
 
 using BugCatcher.Utils;
 using BugCatcher.Extensions;
+using BugCatcher.Extensions.Functional;
 
 /// <summary>
 /// AudioManager singleton class.
@@ -113,9 +114,9 @@ public class AudioManager : MonoSingle<AudioManager>
     /// </summary>
     private void LoadSFXClips()
     {
-        sfxClips["Click"]       = Resources.Load<AudioClip>( "Music/CLICK_SOUND_EFFECT" );
-        sfxClips["BugCaught"]   = Resources.Load<AudioClip>( "Music/NET_SOUND_EFFECT" );
-        sfxClips["BugBite"]     = Resources.Load<AudioClip>( "Music/DAMAGE_SOUND_EFFECT" );
+        sfxClips["Click"]       = Resources.Load<AudioClip>( "SFX/CLICK_SOUND_EFFECT" );
+        sfxClips["BugCaught"]   = Resources.Load<AudioClip>( "SFX/NET_SOUND_EFFECT" );
+        sfxClips["BugBite"]     = Resources.Load<AudioClip>( "SFX/DAMAGE_SOUND_EFFECT" );
         
         VerifyLoading( sfxClips );
     }
@@ -125,10 +126,10 @@ public class AudioManager : MonoSingle<AudioManager>
     /// </summary>
     private void LoadMusicClips()
     {
-        musicClips["Title"] = Resources.Load<AudioClip>( "SFX/title_theme_bugs" );
-        musicClips["Wave1"] = Resources.Load<AudioClip>( "SFX/WAVE_ONE_-_Flow_1" );
-        musicClips["Wave2"] = Resources.Load<AudioClip>( "SFX/WAVE_TWO" );
-        musicClips["Wave3"] = Resources.Load<AudioClip>( "SFX/WAVE_3" );
+        musicClips["Title"] = Resources.Load<AudioClip>( "Music/title_theme_bugs" );
+        musicClips["Wave1"] = Resources.Load<AudioClip>( "Music/WAVE_ONE_-_Flow_1" );
+        musicClips["Wave2"] = Resources.Load<AudioClip>( "Music/WAVE_TWO" );
+        musicClips["Wave3"] = Resources.Load<AudioClip>( "Music/WAVE_3" );
 
         VerifyLoading( musicClips );
     }
@@ -208,7 +209,7 @@ public class AudioManager : MonoSingle<AudioManager>
         audioSource.volume = volume;
         audioSource.Play();
 
-        Destroy( gameObject, clip.length * ( ( Time.timeScale < 0.01f ) ? 0.01f : Time.timeScale ) );
+        Destroy( gameObject.TeeLog(), clip.TeeLog().length * ( ( Time.timeScale < 0.01f ) ? 0.01f : Time.timeScale ) );
     }
 
     public void SpawnSFX( string clipName, Vector3 position, Transform parent )
