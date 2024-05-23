@@ -113,10 +113,9 @@ public class AudioManager : MonoSingle<AudioManager>
     /// </summary>
     private void LoadSFXClips()
     {
-        sfxClips["Title"] = Resources.Load<AudioClip>( "SFX/title_theme_bugs" );
-        sfxClips["Wave1"] = Resources.Load<AudioClip>( "SFX/WAVE_ONE_-_Flow_1" );
-        sfxClips["Wave2"] = Resources.Load<AudioClip>( "SFX/WAVE_TWO" );
-        sfxClips["Wave3"] = Resources.Load<AudioClip>( "SFX/WAVE_3" );
+        musicClips["Click"] = Resources.Load<AudioClip>( "Music/CLICK_SOUND_EFFECT" );
+        musicClips["BugCaught"] = Resources.Load<AudioClip>( "Music/NET_SOUND_EFFECT" );
+        musicClips["BugBite"] = Resources.Load<AudioClip>( "Music/DAMAGE_SOUND_EFFECT" );
 
         VerifyLoading( sfxClips );
     }
@@ -126,9 +125,10 @@ public class AudioManager : MonoSingle<AudioManager>
     /// </summary>
     private void LoadMusicClips()
     {
-        musicClips["Click"]     = Resources.Load<AudioClip>( "Music/CLICK_SOUND_EFFECT"  );
-        musicClips["BugCaught"] = Resources.Load<AudioClip>( "Music/NET_SOUND_EFFECT"    );
-        musicClips["BugBite"]   = Resources.Load<AudioClip>( "Music/DAMAGE_SOUND_EFFECT" );
+        sfxClips["Title"] = Resources.Load<AudioClip>( "SFX/title_theme_bugs" );
+        sfxClips["Wave1"] = Resources.Load<AudioClip>( "SFX/WAVE_ONE_-_Flow_1" );
+        sfxClips["Wave2"] = Resources.Load<AudioClip>( "SFX/WAVE_TWO" );
+        sfxClips["Wave3"] = Resources.Load<AudioClip>( "SFX/WAVE_3" );
 
         VerifyLoading( musicClips );
     }

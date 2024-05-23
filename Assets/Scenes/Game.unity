@@ -745,7 +745,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _timeTmp: {fileID: 0}
   _scoreTmp: {fileID: 0}
-  _healthBar: {fileID: 0}
+  _healthBar: {fileID: 230623527}
   _player: {fileID: 963194228}
   _lookAt: {fileID: 2094975320}
   _lurkZone: {fileID: 680369459}
