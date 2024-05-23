@@ -15,5 +15,9 @@ public class LoadSceneButton : MonoBehaviour
     void OnEnable() => _button.onClick.AddListener(Load);
     void OnDisable() => _button.onClick.RemoveListener(Load);
 
-    void Load() => SceneManager.LoadScene(sceneName);
+    void Load()
+    {
+        Debug.Log("test");
+        SceneManager.LoadScene(sceneName);
+    }
 }

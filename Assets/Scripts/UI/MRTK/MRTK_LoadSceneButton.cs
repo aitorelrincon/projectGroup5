@@ -13,6 +13,11 @@ public class MRTK_LoadSceneButton : MonoBehaviour
     void Awake()     => _interactable = GetComponent<Interactable>();
     void OnEnable()  => _interactable.OnClick.AddListener( LoadScene );
     void OnDisable() => _interactable.OnClick.RemoveListener( LoadScene );
-    public void LoadScene() { SceneManager.LoadScene(sceneName); }
+    public void LoadScene() { Debug.Log("test");  SceneManager.LoadScene(sceneName); }
     public string currentScene { get { return SceneManager.GetActiveScene().name; } }
+    
+    public void MiDebug()
+    {
+        Debug.Log("test");
+    }
 }
