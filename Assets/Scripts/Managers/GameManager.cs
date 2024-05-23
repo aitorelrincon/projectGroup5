@@ -131,6 +131,11 @@ public class GameManager : MonoShared<GameManager>
         _lurkZone.gameObject.layer = Layers.LurkZone;
     }
 
+    void Start()
+    {
+        AudioManager.Instance.PlayMusic( "Wave1" );
+    }
+
     void Update()
     {
 #if TEXT_IMPLEMENTED
@@ -149,7 +154,7 @@ public class GameManager : MonoShared<GameManager>
 
             // Avoids starting Wave3 again
             if ( _waveIdx <= 3 )
-                AudioManager.Instance.PlayMusic( "Wave" + Mathf.Max( _waveIdx, 3 ) );
+                AudioManager.Instance.PlayMusic( "Wave" + Mathf.Max( _waveIdx+1, 3 ) );
         }
     }
 

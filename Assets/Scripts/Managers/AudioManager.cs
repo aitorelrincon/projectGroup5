@@ -10,6 +10,7 @@ using UnityEngine;
 
 using BugCatcher.Utils;
 using BugCatcher.Extensions;
+using BugCatcher.Extensions.Functional;
 
 /// <summary>
 /// AudioManager singleton class.
@@ -19,8 +20,10 @@ public class AudioManager : MonoSingle<AudioManager>
 {
     public const int GEN_CHANNEL = 0;
 
-    public const string PREFS_VOLMUS_KEY = "MusicVolume";
-    public const string PREFS_VOLSFX_KEY = "SfxVolume";
+    public const string PREFS_MUS_VOL   = "MusicVolume";
+    public const string PREFS_MUS_MUTE  = "MusicMute";
+    public const string PREFS_SFX_VOL   = "SfxVolume";
+    public const string PREFS_SFX_MUTE  = "SfxMute";
 
     [Header("Audio Sources")]
     public AudioSource   musicSource;
@@ -29,11 +32,44 @@ public class AudioManager : MonoSingle<AudioManager>
         sfxClips   = new(), 
         musicClips = new();
 
-    [Header("Audio Volume")]
-    [Range(0, 1)] float _musicVolume = 1.0f;
-    [Range(0, 1)] float _sfxVolume   = 1.0f;      
-    public float musicVolume { get => _musicVolume; set => _musicVolume = Mathf.Clamp( _musicVolume, 0.0f, 1.0f ); }
-    public float sfxVolume   { get =>   _sfxVolume; set =>   _sfxVolume = Mathf.Clamp(   _sfxVolume, 0.0f, 1.0f ); }
+    [Header("Music config")]
+    [Range(0, 1)]   float _musicVolume  = 1.0f;
+    [SerializeField] bool _musicMute    = false;
+
+    [Header("SFX config")]
+    [Range(0, 1)]   float _sfxVolume    = 1.0f;      
+    [SerializeField] bool _sfxMute      = false;
+
+    public float musicVolume { 
+        get => _musicVolume; 
+        set => _musicVolume = ( musicSource.volume = Mathf.Clamp01( value ) );
+    }
+    
+    public bool  musicMute  { 
+        get => _musicMute; 
+        set => _musicMute = ( musicSource.mute = value ); 
+    }
+
+    public float sfxVolume
+    {
+        get => _sfxVolume;
+        set
+        {
+            _sfxVolume = Mathf.Clamp01( value );
+            foreach ( var c in sfxChannels )
+                c.volume = _sfxVolume;
+        }
+    }
+
+    public bool sfxMute
+    {
+        get => _sfxMute;
+        set {
+            _sfxMute = value;
+            foreach ( var c in sfxChannels )
+                c.mute = _sfxMute;
+        }
+    }
 
     [Header("Spawned Audio Parents")]
     public bool selfDefaultParent = true;
@@ -42,17 +78,13 @@ public class AudioManager : MonoSingle<AudioManager>
         defaultMusicParent = null;
 
     public void LoadPrefs()
-    {
-        if ( PlayerPrefs.HasKey( PREFS_VOLMUS_KEY ) )
-            musicVolume = PlayerPrefs.GetFloat( PREFS_VOLMUS_KEY );
-
-        if ( PlayerPrefs.HasKey( PREFS_VOLSFX_KEY ) )
-            musicVolume = PlayerPrefs.GetFloat( PREFS_VOLSFX_KEY );
-
-        musicSource.volume = musicVolume;
-        foreach ( var c in sfxChannels )
-            c.volume = sfxVolume;
+    { 
+        musicVolume = BC_Prefs.GetFloat(  PREFS_MUS_VOL,  musicVolume );
+        musicMute   = BC_Prefs.GetBool32( PREFS_MUS_MUTE, musicMute );
+        sfxVolume   = BC_Prefs.GetFloat(  PREFS_SFX_VOL,  sfxVolume );
+        sfxMute     = BC_Prefs.GetBool32( PREFS_SFX_MUTE, sfxMute );
     }
+
 
     protected override void OnAwake()
     {
@@ -111,8 +143,10 @@ public class AudioManager : MonoSingle<AudioManager>
     /// </summary>
     private void LoadSFXClips()
     {
-        sfxClips["Example"] = Resources.Load<AudioClip>( "SFX/Example" );
-
+        sfxClips["Click"]       = Resources.Load<AudioClip>( "SFX/CLICK_SOUND_EFFECT" );
+        sfxClips["BugCaught"]   = Resources.Load<AudioClip>( "SFX/NET_SOUND_EFFECT" );
+        sfxClips["BugBite"]     = Resources.Load<AudioClip>( "SFX/DAMAGE_SOUND_EFFECT" );
+        
         VerifyLoading( sfxClips );
     }
 
@@ -121,7 +155,10 @@ public class AudioManager : MonoSingle<AudioManager>
     /// </summary>
     private void LoadMusicClips()
     {
-        musicClips["Example"] = Resources.Load<AudioClip>( "Music/Example" );
+        musicClips["Title"] = Resources.Load<AudioClip>( "Music/title_theme_bugs" );
+        musicClips["Wave1"] = Resources.Load<AudioClip>( "Music/WAVE_ONE_-_Flow_1" );
+        musicClips["Wave2"] = Resources.Load<AudioClip>( "Music/WAVE_TWO" );
+        musicClips["Wave3"] = Resources.Load<AudioClip>( "Music/WAVE_3" );
 
         VerifyLoading( musicClips );
     }
@@ -201,7 +238,7 @@ public class AudioManager : MonoSingle<AudioManager>
         audioSource.volume = volume;
         audioSource.Play();
 
-        Destroy( gameObject, clip.length * ( ( Time.timeScale < 0.01f ) ? 0.01f : Time.timeScale ) );
+        Destroy( gameObject.TeeLog(), clip.TeeLog().length * ( ( Time.timeScale < 0.01f ) ? 0.01f : Time.timeScale ) );
     }
 
     public void SpawnSFX( string clipName, Vector3 position, Transform parent )
