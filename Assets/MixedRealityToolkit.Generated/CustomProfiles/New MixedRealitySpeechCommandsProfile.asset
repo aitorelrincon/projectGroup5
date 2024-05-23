@@ -23,3 +23,24 @@ MonoBehaviour:
       id: 11
       description: Mouse Delta
       axisConstraint: 4
+  - localizationKey: en
+    keyword: Settings
+    keyCode: 13
+    action:
+      id: 6
+      description: Grip Press
+      axisConstraint: 3
+  - localizationKey: en
+    keyword: Exit
+    keyCode: 256
+    action:
+      id: 12
+      description: Index Finger Pose
+      axisConstraint: 7
+  - localizationKey: en
+    keyword: Return
+    keyCode: 282
+    action:
+      id: 15
+      description: Select
+      axisConstraint: 2
