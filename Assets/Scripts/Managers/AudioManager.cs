@@ -19,8 +19,10 @@ public class AudioManager : MonoSingle<AudioManager>
 {
     public const int GEN_CHANNEL = 0;
 
-    public const string PREFS_VOLMUS_KEY = "MusicVolume";
-    public const string PREFS_VOLSFX_KEY = "SfxVolume";
+    public const string PREFS_VOLMUS_KEY    = "MusicVolume";
+    public const string PREFS_VOLMUS_MUTED  = "MusicMute";
+    public const string PREFS_VOLSFX_KEY    = "SfxVolume";
+    public const string PREFS_VOLSFX_MUTED  = "SfxMute";
 
     [Header("Audio Sources")]
     public AudioSource   musicSource;
@@ -111,7 +113,10 @@ public class AudioManager : MonoSingle<AudioManager>
     /// </summary>
     private void LoadSFXClips()
     {
-        sfxClips["Example"] = Resources.Load<AudioClip>( "SFX/Example" );
+        sfxClips["Title"] = Resources.Load<AudioClip>( "SFX/title_theme_bugs" );
+        sfxClips["Wave1"] = Resources.Load<AudioClip>( "SFX/WAVE_ONE_-_Flow_1" );
+        sfxClips["Wave2"] = Resources.Load<AudioClip>( "SFX/WAVE_TWO" );
+        sfxClips["Wave3"] = Resources.Load<AudioClip>( "SFX/WAVE_3" );
 
         VerifyLoading( sfxClips );
     }
@@ -121,7 +126,9 @@ public class AudioManager : MonoSingle<AudioManager>
     /// </summary>
     private void LoadMusicClips()
     {
-        musicClips["Example"] = Resources.Load<AudioClip>( "Music/Example" );
+        musicClips["Click"]     = Resources.Load<AudioClip>( "Music/CLICK_SOUND_EFFECT"  );
+        musicClips["BugCaught"] = Resources.Load<AudioClip>( "Music/NET_SOUND_EFFECT"    );
+        musicClips["BugBite"]   = Resources.Load<AudioClip>( "Music/DAMAGE_SOUND_EFFECT" );
 
         VerifyLoading( musicClips );
     }

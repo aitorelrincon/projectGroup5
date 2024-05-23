@@ -165,14 +165,15 @@ public class BugBehaviour : MonoBehaviour
             // BugState.Attack is a failsafe to make sure the player doesn't get hurt
             // until we want to, nothing more
             case ( BugState.Attack,   Layers.Player      ):
-                // Debug.LogWarning( "[BugBehaviour] - TODO: REMOVE PLAYER HEALTH" );
                 GameManager.Instance.health -= 20;
+                AudioManager.Instance.SpawnSFX( "BugBite", _bug.position );
                 gameObject.SetActive( false );
                 break;
 
             // Catch the bug
             case (               _,   Layers.Net         ):
                 GameManager.Instance.AddScore( value );
+                AudioManager.Instance.SpawnSFX( "BugCaught", _bug.position );
                 _state = BugState.Captured;
                 gameObject.SetActive( false );
                 break;
