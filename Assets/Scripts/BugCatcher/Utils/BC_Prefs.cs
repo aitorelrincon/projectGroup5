@@ -7,6 +7,8 @@ public static class BC_Prefs
         => PlayerPrefs.HasKey( key )
          ? PlayerPrefs.GetFloat( key )
          : failsafe;
+    public static void SetFloat( string key, float value )
+        => PlayerPrefs.SetFloat( key, value );
 
     public static bool GetBool32( string key, bool failsafe )
         => PlayerPrefs.HasKey( key )

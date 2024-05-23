@@ -11,7 +11,7 @@ public class LoadSceneButton : MonoBehaviour
     [SerializeField] string sceneName;
 
     Button _button;
-    void OnAwake() => _button = GetComponent<Button>();
+    void Awake() => _button = GetComponent<Button>();
     void OnEnable() => _button.onClick.AddListener(Load);
     void OnDisable() => _button.onClick.RemoveListener(Load);
 

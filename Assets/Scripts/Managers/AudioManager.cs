@@ -77,12 +77,20 @@ public class AudioManager : MonoSingle<AudioManager>
         defaultSfxParent   = null,
         defaultMusicParent = null;
 
+    public void SavePrefs()
+    {
+        BC_Prefs.SetFloat(  PREFS_MUS_VOL,  musicVolume );
+        BC_Prefs.SetBool32( PREFS_MUS_MUTE, musicMute   );
+        BC_Prefs.SetFloat(  PREFS_SFX_VOL,  sfxVolume   );
+        BC_Prefs.SetBool32( PREFS_SFX_MUTE, sfxMute     );
+    }
+
     public void LoadPrefs()
     { 
         musicVolume = BC_Prefs.GetFloat(  PREFS_MUS_VOL,  musicVolume );
-        musicMute   = BC_Prefs.GetBool32( PREFS_MUS_MUTE, musicMute );
-        sfxVolume   = BC_Prefs.GetFloat(  PREFS_SFX_VOL,  sfxVolume );
-        sfxMute     = BC_Prefs.GetBool32( PREFS_SFX_MUTE, sfxMute );
+        musicMute   = BC_Prefs.GetBool32( PREFS_MUS_MUTE, musicMute   );
+        sfxVolume   = BC_Prefs.GetFloat(  PREFS_SFX_VOL,  sfxVolume   );
+        sfxMute     = BC_Prefs.GetBool32( PREFS_SFX_MUTE, sfxMute     );
     }
 
 
@@ -225,32 +233,35 @@ public class AudioManager : MonoSingle<AudioManager>
         string clipName,
         Vector3 position,
         Transform parent,
-        float volume = 1.0f
+        float volume,
+        bool mute
     ) {
         var gameObject                = new GameObject( $"OneShotClip_{clipName}" );
         gameObject.transform.position = position;
         gameObject.transform.parent   = parent;
 
-        var clip = audioClips[clipName];
-        var audioSource = gameObject.AddComponent<AudioSource>();
-        audioSource.clip = clip;
-        audioSource.spatialBlend = 1f;
-        audioSource.volume = volume;
+        var clip                      = audioClips[clipName];
+        var audioSource               = gameObject.AddComponent<AudioSource>();
+        audioSource.clip              = clip;
+        audioSource.spatialBlend      = 1f;
+        audioSource.volume            = volume;
+        audioSource.mute              = mute;
         audioSource.Play();
 
         Destroy( gameObject.TeeLog(), clip.TeeLog().length * ( ( Time.timeScale < 0.01f ) ? 0.01f : Time.timeScale ) );
     }
 
     public void SpawnSFX( string clipName, Vector3 position, Transform parent )
-        => SpawnClip( sfxClips, clipName, position, parent, sfxVolume );
+        => SpawnClip( sfxClips, clipName, position, parent, sfxVolume, sfxMute );
+
     public void SpawnSFX( string clipName, Vector3 position )
-        => SpawnClip( sfxClips, clipName, position, defaultSfxParent, sfxVolume );
+        => SpawnClip( sfxClips, clipName, position, defaultSfxParent, sfxVolume, sfxMute );
 
     public void SpawnMusic( string clipName, Vector3 position, Transform parent )
-        => SpawnClip( musicClips, clipName, position, parent, musicVolume );
+        => SpawnClip( musicClips, clipName, position, parent, musicVolume, musicMute );
 
     public void SpawnMusic( string clipName, Vector3 position )
-        => SpawnClip( musicClips, clipName, position, defaultMusicParent, musicVolume );
+        => SpawnClip( musicClips, clipName, position, defaultMusicParent, musicVolume, musicMute );
 
     /// <summary>
     /// Stops sfxSource by index.
