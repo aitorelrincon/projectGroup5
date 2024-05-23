@@ -20,10 +20,10 @@ public class AudioManager : MonoSingle<AudioManager>
 {
     public const int GEN_CHANNEL = 0;
 
-    public const string PREFS_VOLMUS_KEY    = "MusicVolume";
-    public const string PREFS_VOLMUS_MUTED  = "MusicMute";
-    public const string PREFS_VOLSFX_KEY    = "SfxVolume";
-    public const string PREFS_VOLSFX_MUTED  = "SfxMute";
+    public const string PREFS_MUS_VOL   = "MusicVolume";
+    public const string PREFS_MUS_MUTE  = "MusicMute";
+    public const string PREFS_SFX_VOL   = "SfxVolume";
+    public const string PREFS_SFX_MUTE  = "SfxMute";
 
     [Header("Audio Sources")]
     public AudioSource   musicSource;
@@ -32,11 +32,44 @@ public class AudioManager : MonoSingle<AudioManager>
         sfxClips   = new(), 
         musicClips = new();
 
-    [Header("Audio Volume")]
-    [Range(0, 1)] float _musicVolume = 1.0f;
-    [Range(0, 1)] float _sfxVolume   = 1.0f;      
-    public float musicVolume { get => _musicVolume; set => _musicVolume = Mathf.Clamp( _musicVolume, 0.0f, 1.0f ); }
-    public float sfxVolume   { get =>   _sfxVolume; set =>   _sfxVolume = Mathf.Clamp(   _sfxVolume, 0.0f, 1.0f ); }
+    [Header("Music config")]
+    [Range(0, 1)]   float _musicVolume  = 1.0f;
+    [SerializeField] bool _musicMute    = false;
+
+    [Header("SFX config")]
+    [Range(0, 1)]   float _sfxVolume    = 1.0f;      
+    [SerializeField] bool _sfxMute      = false;
+
+    public float musicVolume { 
+        get => _musicVolume; 
+        set => _musicVolume = ( musicSource.volume = Mathf.Clamp01( value ) );
+    }
+    
+    public bool  musicMute  { 
+        get => _musicMute; 
+        set => _musicMute = ( musicSource.mute = value ); 
+    }
+
+    public float sfxVolume
+    {
+        get => _sfxVolume;
+        set
+        {
+            _sfxVolume = Mathf.Clamp01( value );
+            foreach ( var c in sfxChannels )
+                c.volume = _sfxVolume;
+        }
+    }
+
+    public bool sfxMute
+    {
+        get => _sfxMute;
+        set {
+            _sfxMute = value;
+            foreach ( var c in sfxChannels )
+                c.mute = _sfxMute;
+        }
+    }
 
     [Header("Spawned Audio Parents")]
     public bool selfDefaultParent = true;
@@ -45,17 +78,13 @@ public class AudioManager : MonoSingle<AudioManager>
         defaultMusicParent = null;
 
     public void LoadPrefs()
-    {
-        if ( PlayerPrefs.HasKey( PREFS_VOLMUS_KEY ) )
-            musicVolume = PlayerPrefs.GetFloat( PREFS_VOLMUS_KEY );
-
-        if ( PlayerPrefs.HasKey( PREFS_VOLSFX_KEY ) )
-            musicVolume = PlayerPrefs.GetFloat( PREFS_VOLSFX_KEY );
-
-        musicSource.volume = musicVolume;
-        foreach ( var c in sfxChannels )
-            c.volume = sfxVolume;
+    { 
+        musicVolume = BC_Prefs.GetFloat(  PREFS_MUS_VOL,  musicVolume );
+        musicMute   = BC_Prefs.GetBool32( PREFS_MUS_MUTE, musicMute );
+        sfxVolume   = BC_Prefs.GetFloat(  PREFS_SFX_VOL,  sfxVolume );
+        sfxMute     = BC_Prefs.GetBool32( PREFS_SFX_MUTE, sfxMute );
     }
+
 
     protected override void OnAwake()
     {
