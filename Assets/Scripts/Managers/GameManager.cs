@@ -146,6 +146,8 @@ public class GameManager : MonoShared<GameManager>
     bool _loadScene = false;
     void Update()
     {
+        if ( _loadScene ) return;
+
 #if TEXT_IMPLEMENTED
         // _timer.TryFormatMinutes( _timeFmt );
         // _timeTmp.TeeLog();
@@ -153,14 +155,13 @@ public class GameManager : MonoShared<GameManager>
         _timeTmp.text = Timer.FmtMinutes( secs ); // _timeFmt.ToString();
         Debug.Log( _timeTmp.text );
 #endif
-        if ( _loadScene ) return;
 
         if ( !onGoing )
         {
-            _timer.Secs.TeeLog();
-            _health.TeeLog();
-            Ranking.CheckEntry( Mathf.Clamp( MAX_TIME - secs, 0f, MAX_TIME ), _currentScore );
-            SCManager.Instance.LoadScene( "Ranking" );
+            // _timer.Secs.TeeLog();
+            // _health.TeeLog();
+            // Ranking.CheckEntry( Mathf.Clamp( MAX_TIME - secs, 0f, MAX_TIME ), _currentScore );
+            SCManager.Instance.LoadScene( "Main Menu" );
             _loadScene = true;
             return;
         }

@@ -6964,6 +6964,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2008946456148341531, guid: 733dec41eb1b27341bc74c6bbf00080a, type: 3}
+      propertyPath: keywords.Array.data[4].keyword
+      value: Menu
+      objectReference: {fileID: 0}
     - target: {fileID: 2863195480740921641, guid: 733dec41eb1b27341bc74c6bbf00080a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.0018683542
