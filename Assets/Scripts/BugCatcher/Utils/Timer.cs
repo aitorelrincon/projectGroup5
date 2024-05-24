@@ -78,22 +78,19 @@ namespace BugCatcher.Utils
         public void ResetToZero()  => Secs = 0;
         public void ResetToStart() => Secs = startSecs;
 
-        public string FmtMinutes()
+        public static string FmtMinutes( float Secs )
             => $"{Mathf.FloorToInt( Secs / 60 ):00}:{Mathf.FloorToInt( Secs % 60 ):00}";
 
-        public ReadOnlySpan<char> SpanMinutes()
+        public static ReadOnlySpan<char> SpanMinutes( float Secs )
             => $"{Mathf.FloorToInt( Secs / 60 ):00}:{Mathf.FloorToInt( Secs % 60 ):00}".AsSpan();
 
-        public bool TryFormatMinutes( Span<char> dest )
-            => TryFormatMinutes( dest, 0 );
-
-        public bool TryFormatMinutes(Span<char> dest, int start)
+        public static bool TryFormatMinutes( Span<char> dest, int start, float Secs )
         {
             // Not enough space for formatting
             if ( start + 5 > dest.Length )
                 return false;
 
-            var m = (short)Mathf.Min(Mathf.FloorToInt( Secs / 60), 99 );
+            var m = (short)Mathf.Min( Mathf.FloorToInt( Secs / 60 ), 99 );
             var s = (short)Mathf.FloorToInt( Secs % 60 );
 
             // MM:SS, Max 99 minutes
@@ -104,5 +101,10 @@ namespace BugCatcher.Utils
             dest[start + 4] = (char)( s % 10 + '0' );
             return true;
         }
+
+        public string              FmtMinutes() => FmtMinutes( Secs );
+        public ReadOnlySpan<char> SpanMinutes() => SpanMinutes( Secs );
+        public bool TryFormatMinutes( Span<char> dest )            => TryFormatMinutes( dest, 0, Secs );
+        public bool TryFormatMinutes( Span<char> dest, int start ) => TryFormatMinutes( dest, start, Secs );
     }
 }

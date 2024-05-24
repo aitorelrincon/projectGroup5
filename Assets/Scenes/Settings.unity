@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18107848, g: 0.47406614, b: 0.686389, a: 1}
+  m_IndirectSpecularColor: {r: 0.18285483, g: 0.47402143, b: 0.68582696, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -803,7 +803,7 @@ MonoBehaviour:
   tickMarks: {fileID: 0}
   thumbVisuals: {fileID: 32931504}
   sliderAxis: 0
-  sliderStartDistance: -0.12407813
+  sliderStartDistance: -0.124999985
   sliderEndDistance: 0.124999985
   OnValueUpdated:
     m_PersistentCalls:
@@ -1695,7 +1695,6 @@ GameObject:
   m_Component:
   - component: {fileID: 559427518}
   - component: {fileID: 559427520}
-  - component: {fileID: 559427519}
   - component: {fileID: 559427521}
   m_Layer: 0
   m_Name: TextMeshPro
@@ -1723,14 +1722,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0.0018, y: -0.0038}
   m_SizeDelta: {x: 0.032, y: 0.01}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &559427519
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 559427517}
-  m_CullTransparentMesh: 0
 --- !u!23 &559427520
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1947,7 +1938,7 @@ MonoBehaviour:
   tickMarks: {fileID: 0}
   thumbVisuals: {fileID: 374795821}
   sliderAxis: 0
-  sliderStartDistance: -0.12407813
+  sliderStartDistance: -0.124999985
   sliderEndDistance: 0.124999985
   OnValueUpdated:
     m_PersistentCalls:
@@ -4569,7 +4560,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1428314278}
-  - component: {fileID: 1428314279}
   m_Layer: 0
   m_Name: MixedRealityPlayspace
   m_TagString: Untagged
@@ -4593,13 +4583,45 @@ Transform:
   - {fileID: 963194228}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1428314279
+--- !u!1 &1448549079
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1448549080}
+  - component: {fileID: 1448549081}
+  m_Layer: 0
+  m_Name: Settings
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1448549080
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1448549079}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1448549081
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1428314277}
+  m_GameObject: {fileID: 1448549079}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1e3d7938597836b4b9764079c3d16741, type: 3}
@@ -5143,7 +5165,6 @@ GameObject:
   - component: {fileID: 1756765250}
   - component: {fileID: 1756765252}
   - component: {fileID: 1756765253}
-  - component: {fileID: 1756765254}
   m_Layer: 0
   m_Name: MixedRealitySceneContent
   m_TagString: Untagged
@@ -5276,31 +5297,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1756765246}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c683f96e61ecff64abee3f7fbee521a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   sceneName: ProtoGame
---- !u!114 &1756765254
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1756765246}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15991f996b2f1a44eb2bd4dee43fafdc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  musicSource: {fileID: 0}
-  sfxChannels: []
-  _musicMute: 0
-  _sfxMute: 0
-  selfDefaultParent: 1
-  defaultSfxParent: {fileID: 0}
-  defaultMusicParent: {fileID: 0}
 --- !u!1 &1808729214
 GameObject:
   m_ObjectHideFlags: 0
@@ -6025,3 +6027,4 @@ SceneRoots:
   - {fileID: 1995171973}
   - {fileID: 1428314278}
   - {fileID: 1756765248}
+  - {fileID: 1448549080}

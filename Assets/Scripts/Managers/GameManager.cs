@@ -10,6 +10,10 @@ using BugCatcher.Extensions.Functional;
 
 public class GameManager : MonoShared<GameManager>
 {
+    #region Constants
+    public const float MAX_TIME = 5 * 60;
+    #endregion
+
     #region Nested types
     [System.Serializable]
     public struct WaveParams
@@ -110,7 +114,7 @@ public class GameManager : MonoShared<GameManager>
 
         _timer           = gameObject.GetOrAddComponent<Timer>();
         _timer.CountMode = Timer.Count.Down;
-        _timer.Secs      = 120; // Two minutes
+        _timer.Secs      = MAX_TIME; // Two minutes
 
         _spawner         = GetComponent<MultiSpawner>();
         _spawner.proceedSpawnCheck = () => _spawner.spawnedCount + _waveCaught < currentWave.count;
@@ -136,13 +140,22 @@ public class GameManager : MonoShared<GameManager>
         AudioManager.Instance.PlayMusic( "Wave1" );
     }
 
+    bool _loadScene = false;
     void Update()
     {
 #if TEXT_IMPLEMENTED
         _timer.TryFormatMinutes( _timeFmt );
         _timeTmp.text = _timeFmt.ToString();
 #endif
-        if ( !onGoing ) return;
+        if ( _loadScene ) return;
+
+        if ( !onGoing )
+        {
+            Ranking.CheckEntry( Mathf.Clamp( _timer.Secs, 0f, MAX_TIME ), _currentScore );
+            SCManager.Instance.LoadScene( "Ranking" );
+            _loadScene = true;
+            return;
+        }
 
         if ( currentWave.count <= _waveCaught )
         {
