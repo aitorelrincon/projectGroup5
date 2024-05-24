@@ -27,7 +27,16 @@ namespace BugCatcher.Utils.ObjectPooling
             {
                 yield return new WaitForEndOfFrame();
                 while ( queue.TryDequeue( out var current ) )
-                    current.go.transform.SetParent( current.t );
+                {
+                    try
+                    {
+                        current.go.transform.SetParent( current.t );
+                    } 
+                    catch( MissingReferenceException mre )
+                    {
+                        Debug.LogWarning( "[PoolParenting] - MissingReferenceException but who cares" );
+                    }
+                }
             }
         }
     }

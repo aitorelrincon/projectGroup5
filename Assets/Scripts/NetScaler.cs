@@ -18,7 +18,7 @@ public class NetScaler : MonoBehaviour, INetScaler<NetScaler>
     public Transform netHandle;
 
     private float[] heightScales = new float[] { 1.0f, 1.75f, 3.0f };
-    private int   currentIndex = 0;
+    private int   currentIndex = 1;
 #if ORIGINAL
     private float baseHeight = 0.02f; // Adjust this to set the initial height of the handle
     private float baseY;

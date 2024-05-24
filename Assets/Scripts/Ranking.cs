@@ -72,8 +72,7 @@ public static class Ranking
             File.WriteAllText( SAVE_FILE, JsonUtility.ToJson( new JsonList<Entry>( ranking ), true ) );
         }
 
-        ranking.Sort( ( a, b ) => a.secs.CompareTo( b.secs )
-                                + a.score.CompareTo( b.score ) );
+        ranking.Sort( ( a, b ) => -a.secs.CompareTo( b.secs ) - a.score.CompareTo( b.score ) );
     }
 
     public static void CheckEntry( float secs, uint score )
@@ -93,7 +92,8 @@ public static class Ranking
 
     public static bool SaveLastScore( string n )
     {
-        if ( n is null || n.Length <= 0 ) return false;
+        if ( n is null || n.Length <= 0 || n.Length > 10 ) 
+            return false;
 
         lastGame.entry.name = n;
         ranking.Insert(

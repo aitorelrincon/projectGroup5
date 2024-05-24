@@ -3,6 +3,7 @@ using BugCatcher.Extensions.Functional;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIController : MonoSingle<UIController>
 {
@@ -18,21 +19,53 @@ public class UIController : MonoSingle<UIController>
 
     public void StartGame()
     {
-        SCManager.Instance.TeeLog().LoadScene("Game");
+        if ( SceneManager.GetActiveScene().name == "Main Menu" )
+            SCManager.Instance.TeeLog().LoadScene("Game");
     }
 
     public void LeaveGame()
     {
-        SCManager.Instance.LoadScene("Main Menu");
+        if ( SceneManager.GetActiveScene().name == "Game" )
+            SCManager.Instance.LoadScene("Main Menu");
     }
 
     public void Settings()
     {
-        SCManager.Instance.LoadScene("Settings");
+        if ( SceneManager.GetActiveScene().name == "Main Menu" )
+            SCManager.Instance.LoadScene("Settings");
+    }
+
+    public void GoToRanking()
+    {
+        if ( SceneManager.GetActiveScene().name == "Main Menu" )
+            SCManager.Instance.LoadScene( "Ranking" );
     }
 
     public void ExitGame()
     {
-        SCManager.Instance.Exit();
+        if ( SceneManager.GetActiveScene().name == "Main Menu" )
+            SCManager.Instance.Exit();
+    }
+
+    public void Save()
+    {
+        Debug.Log( "[UIController] - Speech:Save detected" );
+        switch ( SceneManager.GetActiveScene().name )
+        {
+            case "Ranking":
+                var updated = RankingUI.Instance.SaveEntry();
+                Ranking.Entry l = Ranking.lastGame.entry, r = Ranking.lastGame.entry;
+                if ( !updated
+                &&   l.name  == r.name
+                &&   l.secs  == r.secs
+                &&   l.score == r.score )
+                    SCManager.Instance.LoadScene( "Main Menu" );
+                break;
+
+            case "Settings":
+                AudioManager.Instance.SavePrefs();
+                SCManager.Instance.LoadScene( "Main Menu" );
+                break;
+        }
     }
 }

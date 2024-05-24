@@ -96,7 +96,14 @@ public class BugBehaviour : MonoBehaviour
     #region Unity methods
     void OnEnable()
     {
-        SetState( BugState.Approach, GameManager.Instance.player.position );
+        try
+        {
+            SetState( BugState.Approach, GameManager.Instance.player.position );
+        }
+        catch ( NullReferenceException nfe )
+        {
+            Debug.LogWarning( "[BugBehaviour] - OnEnable NullReferenceException for GameManager, but we don't care" );
+        }
     }
 
     void Start()
