@@ -38,17 +38,15 @@ public class BugBehaviour : MonoBehaviour
     #endregion
 
     #region Bug stats
-    static readonly float[] _Speed = 
-    {
-        0.25f,
-        0.50f,
-        1.00f,
-        2.00f,
-        4.00f,
+    static readonly float[] _Speed = {
+        0.7f,
+        0.9f,
+        1f,
+        2f,
+        2f,
     };
 
-    static readonly uint[] _Value = 
-    {
+    static readonly uint[] _Value = {
         100,
         300,
         600,
@@ -56,14 +54,14 @@ public class BugBehaviour : MonoBehaviour
         10000,
     };
 
-    static readonly MovementParams[] _MovementParams = 
-    {
+    static readonly MovementParams[] _MovementParams = {
         MovementParams.Default,
         MovementParams.Default,
-        MovementParams.Oscillation( true, 0.25f, 1f ),
-        MovementParams.ErraticBounds( true, BC_Vecs.Fill3( 0.8f ), 1.00f ),
-        MovementParams.ErraticBounds( true, Vector3.one, 0.75f )
+        MovementParams.Oscillation(false, 0.25f, 1f),
+        MovementParams.ErraticBounds(true, BC_Vecs.Fill3(0.8f), 1f),
+        MovementParams.ErraticBounds(true, Vector3.one, 0.75f),
     };
+
     #endregion
 
     #region Bug config
