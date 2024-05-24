@@ -1,4 +1,4 @@
-// #define TEXT_IMPLEMENTED
+#define TEXT_IMPLEMENTED
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,6 +7,7 @@ using TMPro;
 using BugCatcher.Utils;
 using BugCatcher.Extensions;
 using BugCatcher.Extensions.Functional;
+using System.Collections;
 
 public class GameManager : MonoShared<GameManager>
 {
@@ -83,7 +84,7 @@ public class GameManager : MonoShared<GameManager>
     #region Properties
     WaveParams currentWave { get => _waveParams[Mathf.Min( _waveIdx, _waveParams.Length - 1 )]; }
     public float health { get => _health; set => _health = Mathf.Clamp( value, 0, 100 ).Tee( h => _healthBar.value = h ); }
-    public bool onGoing { get => _health > 0f && _timer.Secs > 0f; }
+    public bool onGoing { get => _health > 0f && secs > 0f; }
     #endregion
 
     public Transform player         { get => _player; }
@@ -108,13 +109,14 @@ public class GameManager : MonoShared<GameManager>
     protected override void OnAwake()
     {
 #if TEXT_IMPLEMENTED
-        _timeTmp    = GetComponentInChildren<TMP_Text>();
-        _scoreTmp   = GetComponentInChildren<TMP_Text>();
+        // _timeTmp    = GetComponentInChildren<TMP_Text>();
+        // _scoreTmp   = GetComponentInChildren<TMP_Text>();
 #endif
 
         _timer           = gameObject.GetOrAddComponent<Timer>();
         _timer.CountMode = Timer.Count.Down;
-        _timer.Secs      = MAX_TIME; // Two minutes
+        _timer.Secs      = MAX_TIME;
+        _timer.Secs.TeeLog();
 
         _spawner         = GetComponent<MultiSpawner>();
         _spawner.proceedSpawnCheck = () => _spawner.spawnedCount + _waveCaught < currentWave.count;
@@ -138,20 +140,26 @@ public class GameManager : MonoShared<GameManager>
     void Start()
     {
         AudioManager.Instance.PlayMusic( "Wave1" );
+        StartCoroutine( Timed() );
     }
 
     bool _loadScene = false;
     void Update()
     {
 #if TEXT_IMPLEMENTED
-        _timer.TryFormatMinutes( _timeFmt );
-        _timeTmp.text = _timeFmt.ToString();
+        // _timer.TryFormatMinutes( _timeFmt );
+        // _timeTmp.TeeLog();
+        Timer.TryFormatMinutes( _timeFmt, 0, secs );
+        _timeTmp.text = Timer.FmtMinutes( secs ); // _timeFmt.ToString();
+        Debug.Log( _timeTmp.text );
 #endif
         if ( _loadScene ) return;
 
         if ( !onGoing )
         {
-            Ranking.CheckEntry( Mathf.Clamp( _timer.Secs, 0f, MAX_TIME ), _currentScore );
+            _timer.Secs.TeeLog();
+            _health.TeeLog();
+            Ranking.CheckEntry( Mathf.Clamp( MAX_TIME - secs, 0f, MAX_TIME ), _currentScore );
             SCManager.Instance.LoadScene( "Ranking" );
             _loadScene = true;
             return;
@@ -177,5 +185,15 @@ public class GameManager : MonoShared<GameManager>
 #if TEXT_IMPLEMENTED
         _scoreTmp.text  = "Score: " + _currentScore;
 #endif
+    }
+
+    float secs = MAX_TIME;
+    IEnumerator Timed()
+    {
+        while ( secs > 0f )
+        {
+            yield return new WaitForSeconds( 1f );
+            --secs;
+        }
     }
 }

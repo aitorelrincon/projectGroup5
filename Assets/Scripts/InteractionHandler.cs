@@ -1,8 +1,9 @@
 using Microsoft.MixedReality.Toolkit;
+using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 
-public class InteractionHandlerScript : MonoBehaviour,
+public class InteractionHandler : MonoBehaviour,
     IMixedRealityInputActionHandler,
     IMixedRealityFocusHandler
 {
@@ -16,8 +17,8 @@ public class InteractionHandlerScript : MonoBehaviour,
 
     private void OnDisable()
     {
-        CoreServices.InputSystem.UnregisterHandler<IMixedRealityInputActionHandler>( this );
-        CoreServices.InputSystem.UnregisterHandler<IMixedRealityFocusHandler>( this );
+        // CoreServices.InputSystem.UnregisterHandler<IMixedRealityInputActionHandler>( this );
+        // CoreServices.InputSystem.UnregisterHandler<IMixedRealityFocusHandler>( this );
     }
 
     void IMixedRealityInputActionHandler.OnActionStarted( BaseInputEventData eventData )
@@ -27,9 +28,12 @@ public class InteractionHandlerScript : MonoBehaviour,
             return;
         }
 
-        if ( eventData.MixedRealityInputAction.Description == "Select" )
+        switch ( eventData.MixedRealityInputAction.Description )
         {
-            gameObject.GetComponent<SimpleCollectibleScript>().Collect();
+            case "Select":
+            case "Trigger": {
+                gameObject.GetComponent<Interactable>().OnClick.Invoke();
+            } break;
         }
     }
 

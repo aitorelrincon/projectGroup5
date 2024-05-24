@@ -19,6 +19,7 @@ using BugCatcher.Extensions.Functional;
 public class AudioManager : MonoSingle<AudioManager>
 {
     public const int GEN_CHANNEL = 0;
+    public const int TSFX_CHANNEL = 0;
 
     public const string PREFS_MUS_VOL   = "MusicVolume";
     public const string PREFS_MUS_MUTE  = "MusicMute";

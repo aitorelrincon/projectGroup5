@@ -29,7 +29,13 @@ public class Settings : MonoBehaviour
         _sfxMuteCheckbox.IsToggled  = AudioManager.Instance.sfxMute;
 
         _musVolSlider.OnValueUpdated.AddListener( ctx => AudioManager.Instance.musicVolume = ctx.NewValue );
-        _sfxVolSlider.OnValueUpdated.AddListener( ctx => AudioManager.Instance.sfxVolume   = ctx.NewValue );
+        _sfxVolSlider.OnValueUpdated.AddListener( ctx => {
+            AudioManager.Instance.sfxVolume = ctx.NewValue;
+            var src = AudioManager.Instance.sfxChannels[AudioManager.TSFX_CHANNEL];
+            if ( !src.isPlaying 
+            ||    src.time >= src.clip.length - 1.5f )
+                AudioManager.Instance.PlaySFX( "BugBite", AudioManager.TSFX_CHANNEL );
+        } );
         _musMuteCheckbox.OnClick.AddListener( () => AudioManager.Instance.musicMute = _musMuteCheckbox.IsToggled );
         _sfxMuteCheckbox.OnClick.AddListener( () => AudioManager.Instance.sfxMute   = _sfxMuteCheckbox.IsToggled );
     

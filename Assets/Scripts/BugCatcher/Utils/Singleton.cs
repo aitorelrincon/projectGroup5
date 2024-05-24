@@ -38,7 +38,9 @@ namespace BugCatcher.Utils
 
         void OnDestroy()
         {
-            Instance = null;
+            if ( ReferenceEquals( this, Instance ) )
+                Instance = null;
+            
             OnDestroyCustom();
         }
     }
@@ -79,7 +81,9 @@ namespace BugCatcher.Utils
 
         void OnDestroy()
         {
-            Instance = null;
+            if ( ReferenceEquals( this, Instance ) )
+                Instance = null;
+            
             OnDestroyCustom();
         }
     }

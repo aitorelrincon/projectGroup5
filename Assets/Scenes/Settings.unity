@@ -3011,6 +3011,7 @@ GameObject:
   - component: {fileID: 721826055}
   - component: {fileID: 721826054}
   - component: {fileID: 721826059}
+  - component: {fileID: 721826060}
   m_Layer: 0
   m_Name: MusicMuteCheckbox
   m_TagString: Untagged
@@ -3266,6 +3267,18 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   checkbox: {fileID: 721826057}
   audioClip: {fileID: 8300000, guid: 4559223c984903b489b8cf1c673536a5, type: 3}
+--- !u!114 &721826060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 721826052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e557a72d75fffd24dbcedcad26d72625, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &736228713
 GameObject:
   m_ObjectHideFlags: 0
@@ -3833,6 +3846,7 @@ GameObject:
   - component: {fileID: 1064582562}
   - component: {fileID: 1064582561}
   - component: {fileID: 1064582560}
+  - component: {fileID: 1064582565}
   m_Layer: 0
   m_Name: SfxMuteCheckbox
   m_TagString: Untagged
@@ -4088,6 +4102,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.04, y: 0.05, z: 0}
   m_Center: {x: -0.01, y: 0, z: 0.012500003}
+--- !u!114 &1064582565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1064582557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e557a72d75fffd24dbcedcad26d72625, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1127662959
 GameObject:
   m_ObjectHideFlags: 0

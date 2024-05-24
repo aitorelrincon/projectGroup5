@@ -1,5 +1,5 @@
 // #define ORIGINAL
-// #define MRTK_IMPORT_FIXED
+#define MRTK_IMPORT_FIXED
 
 using System.Collections;
 using System.Collections.Generic;
